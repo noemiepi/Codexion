@@ -6,7 +6,7 @@
 #    By: npillet <npillet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 14:31:03 by npillet           #+#    #+#              #
-#    Updated: 2026/06/12 17:23:49 by npillet          ###   ########.fr        #
+#    Updated: 2026/06/16 14:46:47 by npillet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,14 @@ CC = cc
 CFLAGS = -g -Wall -Werror -Wextra
 INC = -I src/include
 
-SRC =	codexion.c			\
-		parser/arg_parse.c	\
-		parser/parsing.c	\
-		scheduler/edf.c		\
-		scheduler/fifo.c	\
-		utils/ft_atoi.c
+SRC =	codexion.c				\
+		parser/arg_parse.c		\
+		parser/parsing.c		\
+		scheduler/edf.c			\
+		scheduler/fifo.c		\
+		coders/init_coders.c	\
+		utils/ft_atoi.c			\
+		utils/debug.c
 
 
 OBJ_PATH = obj/

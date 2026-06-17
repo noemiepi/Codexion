@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/16 15:45:14 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/17 15:46:22 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_coder
 	int			finish;
 	t_dongle	*left_dongle;
 	t_dongle	*right_dongle;
+	pthread_t	thread_id;
 }				t_coder;
 
 typedef struct s_data

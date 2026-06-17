@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:45:18 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/16 15:16:55 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/17 15:50:51 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ void	debug_print_struct(t_data *data)
 	i = 0;
 	while (data->nb_coders != i)
 	{
-		printf("Coder %d\n", data->coder[i].id);
-		i++;
-	}
-	i = 0;
-	while (data->nb_coders != i)
-	{
-		printf("Dongle %d\n", data->dongle[i].id);
+		printf("\nCoder %d:\n", data->coder[i].id);
+		printf("- Thread: %lu\n", data->coder[i].thread_id);
+		printf("- Left dongle: %p\n", data->coder[i].left_dongle);
+		printf("- Right dongle: %p\n", data->coder[i].right_dongle);
 		i++;
 	}
 }

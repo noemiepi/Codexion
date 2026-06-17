@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:49:27 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/16 15:17:47 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/17 10:40:36 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int argc, char **argv)
 		return (FALSE);
 	printf("Parsing completed!\n");
 	init_coder(&data);
-	// debug_print_struct(&data);
+	debug_print_struct(&data);
 	return (TRUE);
 }

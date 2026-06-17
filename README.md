@@ -6,7 +6,25 @@
 
 ## Description
 Thread, machin, machin
+A thread is the smallest unit of processing that can be scheduled by an operating system.
+
+It is a sequence of instructions within a program that can be managed independently.
+
+Threads share the same process resources, including memory and file descriptors, but they run independently and can be executed simultaneously, allowing for multitasking within a single program.
+
+Using threads, you can perform background operations, handle multiple I/O operations, or parallelize tasks to improve performance.
+
 Mutex, bidule, bidule
+A mutex is a MUTual EXclusion device, and is useful for protecting
+shared data structures from concurrent modifications, and
+implementing critical sections and monitors.
+
+A mutex has two possible states: unlocked (not owned by any
+thread), and locked (owned by one thread).  A mutex can never be
+owned by two different threads simultaneously.  A thread
+attempting to lock a mutex that is already locked by another
+thread is suspended until the owning thread unlocks the mutex
+first.
 
 le projet truc
 ```mermaid
@@ -60,7 +78,9 @@ Then run it:
 
 ## Resources
 ### Notions
-#### Multithreading
+#### Threads
+- https://dev.to/emanuelgustafzon/mastering-concurrency-in-c-with-pthreads-a-comprehensive-guide-56je
+
 - https://www.geeksforgeeks.org/c/multithreading-in-c/
 
 #### Mutex

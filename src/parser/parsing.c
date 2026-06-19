@@ -6,53 +6,56 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 11:21:45 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/16 13:43:21 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/19 19:10:28 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-int	parsing(int argc, char **argv, t_data *data)
+static bool	args_parsing(int argc, char **argv, t_data *data);
+static bool	time_parsing(char **argv, t_data *data);
+
+bool	parsing(int argc, char **argv, t_data *data)
 {
 	if (!(args_parsing(argc, argv, data)))
-		return (FALSE);
+		return (false);
 	else
 	{
 		if (!(time_parsing(argv, data)))
-			return (FALSE);
+			return (false);
 	}
-	return (TRUE);
+	return (true);
 }
 
-int	args_parsing(int argc, char **argv, t_data *data)
+static bool	args_parsing(int argc, char **argv, t_data *data)
 {
 	if (!(check_number_of_arguments(argc)))
 	{
 		printf("Invalid number of provided arguments (%d),"
 			"there should be 8.\n", argc - 1);
-		return (FALSE);
+		return (false);
 	}
 	if (!(check_number_of_coder(argv[1], data)))
 	{
 		printf("Invalid number of coders (%s is outside the limits)."
 			"\n", argv[1]);
-		return (FALSE);
+		return (false);
 	}
 	if (!(check_number_of_compiles(argv[6], data)))
 	{
 		printf("Invalid number of required compiles (%s is outside "
 			"the limits).\n", argv[6]);
-		return (FALSE);
+		return (false);
 	}
 	if (!(check_scheduler(argv[8], data)))
 	{
 		printf("Invalid scheduler, choose between fifo or edf.\n");
-		return (FALSE);
+		return (false);
 	}
-	return (TRUE);
+	return (true);
 }
 
-int	time_parsing(char **argv, t_data *data)
+static bool	time_parsing(char **argv, t_data *data)
 {
 	int		time;
 	int		i;
@@ -63,7 +66,7 @@ int	time_parsing(char **argv, t_data *data)
 		if (!(check_given_time(argv[i])))
 		{
 			printf("Invalid time input (%d).\n", time);
-			return (FALSE);
+			return (false);
 		}
 		time = ft_atoi(argv[i]);
 		if (i == 2)
@@ -78,5 +81,5 @@ int	time_parsing(char **argv, t_data *data)
 			data->dongle_cooldown = time;
 		i += 1;
 	}
-	return (TRUE);
+	return (true);
 }

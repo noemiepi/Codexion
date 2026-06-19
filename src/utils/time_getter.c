@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.c                                         :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 10:49:27 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 19:33:24 by npillet          ###   ########.fr       */
+/*   Created: 2026/06/19 13:46:49 by npillet           #+#    #+#             */
+/*   Updated: 2026/06/19 14:47:47 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
-int	main(int argc, char **argv)
+long long	get_time(void)
 {
-	t_data	data;
+	struct timeval	tv;
 
-	memset(&data, 0, sizeof(t_data));
-	if (!(parsing(argc, argv, &data)))
-		return (false);
-	printf("Parsing completed!\n");
-	init_structures(&data);
-	create_mutexes(&data);
-	create_threads(&data);
-	join_threads(&data);
-	free_structures(&data);
-	return (true);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }

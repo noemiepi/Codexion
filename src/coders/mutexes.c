@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.c                                         :+:      :+:    :+:   */
+/*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 10:49:27 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 19:33:24 by npillet          ###   ########.fr       */
+/*   Created: 2026/06/19 18:56:04 by npillet           #+#    #+#             */
+/*   Updated: 2026/06/19 19:33:10 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
-int	main(int argc, char **argv)
+void	create_mutexes(t_data *data)
 {
-	t_data	data;
+	int	i;
 
-	memset(&data, 0, sizeof(t_data));
-	if (!(parsing(argc, argv, &data)))
-		return (false);
-	printf("Parsing completed!\n");
-	init_structures(&data);
-	create_mutexes(&data);
-	create_threads(&data);
-	join_threads(&data);
-	free_structures(&data);
-	return (true);
+	i = 0;
+	pthread_mutex_init(&data->mutex_print, NULL);
+	while (data->nb_coders != i)
+	{
+		pthread_mutex_init(&data->dongle[i].mutex_dongle, NULL);
+		i++;
+	}
 }

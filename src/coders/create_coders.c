@@ -1,22 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_coders.c                                      :+:      :+:    :+:   */
+/*   create_coders.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/17 15:50:01 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/19 15:41:46 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static void	create_coder(t_data *data, t_coder *coder, int i);
-static void	create_dongle(t_dongle *dongle, int i);
+static void	*create_coders(t_data *data);
+static void	init_coder(t_data *data, t_coder *coder, int i);
+static void	init_dongle(t_dongle *dongle, int i);
 static void	assign_dongle(t_data *data, int i);
 
-void	*init_coder(t_data *data)
+void	*init_structures(t_data *data)
+{
+	pthread_t	monitoring;
+
+	monitoring = 0;
+	data->monitoring_id = monitoring;
+	create_coders(data);
+	data->simulation = malloc(sizeof(t_simul));
+	if (data->simulation == NULL)
+		return (NULL);
+	data->simulation->start_simul = get_time();
+	return (NULL);
+}
+
+static void	*create_coders(t_data *data)
 {
 	int	i;
 
@@ -29,15 +44,15 @@ void	*init_coder(t_data *data)
 		return (NULL);
 	while (data->nb_coders != i)
 	{
-		create_coder(data, &data->coder[i], i);
-		create_dongle(&data->dongle[i], i);
+		init_coder(data, &data->coder[i], i);
+		init_dongle(&data->dongle[i], i);
 		assign_dongle(data, i);
 		i++;
 	}
-	return(NULL);
+	return (NULL);
 }
 
-static void	create_coder(t_data *data, t_coder *coder, int i)
+static void	init_coder(t_data *data, t_coder *coder, int i)
 {
 	pthread_t	thread;
 
@@ -45,13 +60,13 @@ static void	create_coder(t_data *data, t_coder *coder, int i)
 	coder->id = i;
 	coder->nb_compile = 0;
 	coder->burnout_time = data->time_burnout;
-	coder->finish = FALSE;
+	coder->finish = false;
 	coder->left_dongle = NULL;
 	coder->right_dongle = NULL;
 	coder->thread_id = thread;
 }
 
-static void	create_dongle(t_dongle *dongle, int i)
+static void	init_dongle(t_dongle *dongle, int i)
 {
 	dongle->id = i;
 	dongle->cooldown = 0;

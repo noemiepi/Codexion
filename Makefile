@@ -6,13 +6,13 @@
 #    By: npillet <npillet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 14:31:03 by npillet           #+#    #+#              #
-#    Updated: 2026/06/16 14:46:47 by npillet          ###   ########.fr        #
+#    Updated: 2026/06/19 19:40:11 by npillet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = codexion
 CC = cc
-CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra -pthread
 INC = -I src/include
 
 SRC =	codexion.c				\
@@ -20,7 +20,14 @@ SRC =	codexion.c				\
 		parser/parsing.c		\
 		scheduler/edf.c			\
 		scheduler/fifo.c		\
-		coders/init_coders.c	\
+		coders/create_coders.c	\
+		coders/coders.c			\
+		coders/monitoring.c		\
+		coders/mutexes.c		\
+		coders/threads.c		\
+		utils/time_getter.c		\
+		utils/terminal_logs.c	\
+		utils/free.c			\
 		utils/ft_atoi.c			\
 		utils/debug.c
 

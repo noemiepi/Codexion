@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 19:37:32 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/22 20:16:31 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	*coders_action(void *arg)
 {
-	t_data	*data;
+	t_coder	*coder;
 
-	data = arg;
-	terminal_logs(data);
+	coder = (t_coder *)arg;
+	terminal_logs(coder);
 	return (NULL);
 }

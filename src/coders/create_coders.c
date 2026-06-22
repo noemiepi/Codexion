@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 15:41:46 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/22 19:54:04 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ void	*init_structures(t_data *data)
 	monitoring = 0;
 	data->monitoring_id = monitoring;
 	create_coders(data);
-	data->simulation = malloc(sizeof(t_simul));
-	if (data->simulation == NULL)
-		return (NULL);
-	data->simulation->start_simul = get_time();
 	return (NULL);
 }
 

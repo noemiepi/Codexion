@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:18:04 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 14:29:10 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/22 18:59:21 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,4 @@ void	free_structures(t_data *data)
 {
 	free(data->dongle);
 	free(data->coder);
-	free(data->simulation);
 }

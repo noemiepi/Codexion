@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 19:38:08 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/22 21:22:16 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define DONGLE_TAKEN "%lld, coder %d has taken a dongle\n"
 # define COMPILING "%lld, coder %d is compiling\n"
 # define DEBUGGING "%lld, coder %d is debugging\n"
-# define REFRACTORING "%lld, coder %d is refactoring\n"
+# define REFACTORING "%lld, coder %d is refactoring\n"
 # define BURNOUT "%lld, coder %d burned out\n"
 
 /* ----------| LIBRARY |---------- */
@@ -34,6 +34,11 @@
 # include <stdbool.h>
 
 /* ---------| STRUCTURES |-------- */
+
+typedef struct s_data		t_data;
+typedef struct s_coder		t_coder;
+typedef struct s_dongle		t_dongle;
+
 typedef struct s_dongle
 {
 	int				id;
@@ -43,6 +48,7 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
+	t_data			*data;
 	int				id;
 	int				nb_compile;
 	long long		burnout_time;
@@ -52,13 +58,10 @@ typedef struct s_coder
 	pthread_t		thread_id;
 }					t_coder;
 
-typedef struct s_simul
-{
-	long long		start_simul;
-}					t_simul;
-
 typedef struct s_data
 {
+	t_coder			*coder;
+	t_dongle		*dongle;
 	int				nb_coders;
 	long long		time_burnout;
 	long long		time_compile;
@@ -67,9 +70,7 @@ typedef struct s_data
 	int				nb_compiles_req;
 	long long		dongle_cooldown;
 	char			*scheduler;
-	t_coder			*coder;
-	t_dongle		*dongle;
-	t_simul			*simulation;
+	long long		start_sim;
 	pthread_t		monitoring_id;
 	pthread_mutex_t	mutex_print;
 }					t_data;
@@ -94,8 +95,9 @@ void		join_threads(t_data *data);
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);
 long long	get_time(void);
+long long	get_current_time(t_data data);
 void		free_structures(t_data *data);
-void		terminal_logs(t_data *data);
+void		terminal_logs(t_coder *coder);
 void		debug_print_struct(t_data *data);
 
 #endif

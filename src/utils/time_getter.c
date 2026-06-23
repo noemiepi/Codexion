@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 13:46:49 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/22 20:21:01 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/23 13:09:16 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ long long	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long long	get_current_time(t_data data)
+long long	get_current_time(t_data *data)
 {
-	return (get_time() - data.start_sim);
+	return (get_time() - data->start_sim);
 }

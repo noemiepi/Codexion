@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:22:16 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/23 18:20:20 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@
 # include <stdbool.h>
 
 /* ---------| STRUCTURES |-------- */
+typedef struct s_data	t_data;
+typedef struct s_coder	t_coder;
+typedef struct s_dongle	t_dongle;
 
-typedef struct s_data		t_data;
-typedef struct s_coder		t_coder;
-typedef struct s_dongle		t_dongle;
 
 typedef struct s_dongle
 {
@@ -87,17 +87,23 @@ bool		check_scheduler(char *schedule, t_data *data);
 /* -----------| CODERS |---------- */
 void		*init_structures(t_data *data);
 void		*monitor(void *arg);
+
 void		*coders_action(void *arg);
+void		take_dongle(t_data *data, t_coder *coder);
+void		terminal_logs(t_data *data, t_coder *coder);
+
 void		create_mutexes(t_data *data);
 void		create_threads(t_data *data);
 void		join_threads(t_data *data);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);
+
 long long	get_time(void);
-long long	get_current_time(t_data data);
+long long	get_current_time(t_data *data);
+
 void		free_structures(t_data *data);
-void		terminal_logs(t_coder *coder);
+
 void		debug_print_struct(t_data *data);
 
 #endif

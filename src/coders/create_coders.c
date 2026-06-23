@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/22 19:54:04 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/23 17:13:55 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	init_coder(t_data *data, t_coder *coder, int i)
 	pthread_t	thread;
 
 	thread = i;
+	coder->data = data;
 	coder->id = i;
 	coder->nb_compile = 0;
 	coder->burnout_time = data->time_burnout;

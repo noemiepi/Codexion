@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	printf("Parsing completed!\n");
 	init_structures(&data);
 	create_mutexes(&data);
+	data.start_sim = get_time();
 	create_threads(&data);
 	join_threads(&data);
 	free_structures(&data);

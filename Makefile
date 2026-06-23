@@ -6,7 +6,7 @@
 #    By: npillet <npillet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 14:31:03 by npillet           #+#    #+#              #
-#    Updated: 2026/06/19 19:40:11 by npillet          ###   ########.fr        #
+#    Updated: 2026/06/23 17:58:40 by npillet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRC =	codexion.c				\
 		coders/mutexes.c		\
 		coders/threads.c		\
 		utils/time_getter.c		\
-		utils/terminal_logs.c	\
 		utils/free.c			\
 		utils/ft_atoi.c			\
 		utils/debug.c

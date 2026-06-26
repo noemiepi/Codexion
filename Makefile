@@ -6,7 +6,7 @@
 #    By: npillet <npillet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 14:31:03 by npillet           #+#    #+#              #
-#    Updated: 2026/06/23 17:58:40 by npillet          ###   ########.fr        #
+#    Updated: 2026/06/26 14:54:08 by npillet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC =	codexion.c				\
 		scheduler/fifo.c		\
 		coders/create_coders.c	\
 		coders/coders.c			\
+		coders/dongles.c		\
 		coders/monitoring.c		\
 		coders/mutexes.c		\
 		coders/threads.c		\

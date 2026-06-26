@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/23 18:20:20 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/26 17:50:04 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,11 @@ void		*init_structures(t_data *data);
 void		*monitor(void *arg);
 
 void		*coders_action(void *arg);
-void		take_dongle(t_data *data, t_coder *coder);
 void		terminal_logs(t_data *data, t_coder *coder);
+
+void		take_dongle(t_coder *coder);
+bool 		try_take_dongle(t_dongle *dongle, t_data *data);
+void		release_dongle(t_coder *coder);
 
 void		create_mutexes(t_data *data);
 void		create_threads(t_data *data);

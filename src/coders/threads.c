@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:39:38 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/23 15:09:43 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/29 10:45:24 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	create_threads(t_data *data)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	pthread_create(&data->monitoring_id, NULL, monitor, data);
 	while (data->nb_coders != i)
 	{
-		pthread_create(&data->coder[i].thread_id, NULL, coders_action, 
+		pthread_create(&data->coder[i].thread_id, NULL, coders_action,
 			&data->coder[i]);
 		i++;
 	}

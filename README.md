@@ -81,5 +81,10 @@ Here is a list of every parameters needed to run the program:
 #### FIFO (First In, First Out)
 - https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn
 
+#### EDF (Earliest Deadline First)
+- https://www.w3schools.com/dsa/dsa_data_binarytrees.php
+
+- https://data-flair.training/blogs/binary-tree-in-c/
+
 ### GitHub
 - https://github.com/Overtekk/Codexion

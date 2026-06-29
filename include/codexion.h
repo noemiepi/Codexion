@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/26 17:50:04 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/29 15:58:48 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_data	t_data;
 typedef struct s_coder	t_coder;
 typedef struct s_dongle	t_dongle;
 
+typedef struct s_fifo	t_fifo;
+typedef struct s_edf	t_edf;
 
 typedef struct s_dongle
 {
@@ -75,6 +77,19 @@ typedef struct s_data
 	pthread_mutex_t	mutex_print;
 }					t_data;
 
+typedef struct s_fifo
+{
+	t_coder			*data;
+	t_fifo			*next;
+}					t_fifo;
+
+typedef struct s_edf
+{
+	t_coder			*data;
+	t_edf			*left;
+	t_edf			*right;
+}					t_edf;
+
 /* ----------| PARSING |---------- */
 bool		parsing(int argc, char **argv, t_data *data);
 
@@ -92,12 +107,16 @@ void		*coders_action(void *arg);
 void		terminal_logs(t_data *data, t_coder *coder);
 
 void		take_dongle(t_coder *coder);
-bool 		try_take_dongle(t_dongle *dongle, t_data *data);
+bool		try_take_dongle(t_dongle *dongle, t_data *data);
 void		release_dongle(t_coder *coder);
 
 void		create_mutexes(t_data *data);
 void		create_threads(t_data *data);
 void		join_threads(t_data *data);
+
+/* ---------| SCHEDULERS |-------- */
+void		scheduler_fifo(t_coder *coder);
+void		scheduler_edf(t_coder *coder);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);

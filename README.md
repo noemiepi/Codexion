@@ -81,6 +81,8 @@ Here is a list of every parameters needed to run the program:
 #### FIFO (First In, First Out)
 - https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn
 
+- https://medium.com/@noransaber685/understanding-queue-data-structures-in-c-the-first-in-first-out-principle-fbd1f89d40dc
+
 #### EDF (Earliest Deadline First)
 - https://www.w3schools.com/dsa/dsa_data_binarytrees.php
 

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/29 15:58:48 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/30 15:56:22 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 
 # define FIFO "fifo"
 # define EDF "edf"
+
+# define ADD 1
+# define REMOVE 2
 
 # define DONGLE_TAKEN "%lld, coder %d has taken a dongle\n"
 # define COMPILING "%lld, coder %d is compiling\n"
@@ -34,29 +37,33 @@
 # include <stdbool.h>
 
 /* ---------| STRUCTURES |-------- */
-typedef struct s_data	t_data;
-typedef struct s_coder	t_coder;
-typedef struct s_dongle	t_dongle;
+typedef struct s_data		t_data;
+typedef struct s_coder		t_coder;
+typedef struct s_dongle		t_dongle;
 
-typedef struct s_fifo	t_fifo;
-typedef struct s_edf	t_edf;
+typedef struct s_queue		t_queue;
+typedef struct s_fifo		t_fifo;
+typedef struct s_edf		t_edf;
 
 typedef struct s_dongle
 {
 	int				id;
 	long long		cooldown;
+
 	pthread_mutex_t	mutex_dongle;
 }					t_dongle;
 
 typedef struct s_coder
 {
 	t_data			*data;
+
 	int				id;
 	int				nb_compile;
 	long long		burnout_time;
 	bool			finish;
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
+
 	pthread_t		thread_id;
 }					t_coder;
 
@@ -64,6 +71,8 @@ typedef struct s_data
 {
 	t_coder			*coder;
 	t_dongle		*dongle;
+	t_queue			*queue;
+
 	int				nb_coders;
 	long long		time_burnout;
 	long long		time_compile;
@@ -72,10 +81,20 @@ typedef struct s_data
 	int				nb_compiles_req;
 	long long		dongle_cooldown;
 	char			*scheduler;
+
 	long long		start_sim;
 	pthread_t		monitoring_id;
+
 	pthread_mutex_t	mutex_print;
 }					t_data;
+
+typedef struct s_queue
+{
+	t_fifo			*front;
+	t_fifo			*rear;
+
+	pthread_mutex_t	mutex_queue;
+}					t_queue;
 
 typedef struct s_fifo
 {
@@ -111,11 +130,12 @@ bool		try_take_dongle(t_dongle *dongle, t_data *data);
 void		release_dongle(t_coder *coder);
 
 void		create_mutexes(t_data *data);
+void		destroy_mutexes(t_data *data);
 void		create_threads(t_data *data);
 void		join_threads(t_data *data);
 
 /* ---------| SCHEDULERS |-------- */
-void		scheduler_fifo(t_coder *coder);
+void		scheduler_fifo(t_queue *queue, t_coder *coder, int step);
 void		scheduler_edf(t_coder *coder);
 
 /* -----------| UTILS |----------- */
@@ -127,5 +147,6 @@ long long	get_current_time(t_data *data);
 void		free_structures(t_data *data);
 
 void		debug_print_struct(t_data *data);
+void		debug_print_queue(t_queue *manager);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: npillet <npillet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 14:31:03 by npillet           #+#    #+#              #
-#    Updated: 2026/06/26 14:54:08 by npillet          ###   ########.fr        #
+#    Updated: 2026/06/30 11:13:02 by npillet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,20 +15,20 @@ CC = cc
 CFLAGS = -g -Wall -Werror -Wextra -pthread
 INC = -I src/include
 
-SRC =	codexion.c				\
-		parser/arg_parse.c		\
-		parser/parsing.c		\
-		scheduler/edf.c			\
-		scheduler/fifo.c		\
-		coders/create_coders.c	\
-		coders/coders.c			\
-		coders/dongles.c		\
-		coders/monitoring.c		\
-		coders/mutexes.c		\
-		coders/threads.c		\
-		utils/time_getter.c		\
-		utils/free.c			\
-		utils/ft_atoi.c			\
+SRC =	codexion.c					\
+		parser/arg_parse.c			\
+		parser/parsing.c			\
+		scheduler/scheduler_edf.c	\
+		scheduler/scheduler_fifo.c	\
+		coders/create_coders.c		\
+		coders/coders.c				\
+		coders/dongles.c			\
+		coders/monitoring.c			\
+		coders/mutexes.c			\
+		coders/threads.c			\
+		utils/time_getter.c			\
+		utils/free.c				\
+		utils/ft_atoi.c				\
 		utils/debug.c
 
 

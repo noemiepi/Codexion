@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:49:27 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/29 11:39:41 by npillet          ###   ########.fr       */
+/*   Updated: 2026/06/30 12:03:24 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int argc, char **argv)
 	data.start_sim = get_time();
 	create_threads(&data);
 	join_threads(&data);
+	destroy_mutexes(&data);
 	free_structures(&data);
 	return (true);
 }

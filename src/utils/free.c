@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:18:04 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 15:51:43 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/01 15:30:59 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	free_structures(t_data *data)
 {
-	t_fifo	**node;
+	t_fifo	*node;
 	t_fifo	*tmp;
 
 	free(data->dongle);
 	free(data->coder);
-	node = &data->queue->front;
-	while (*node)
+	node = data->queue->front;
+	while (node != NULL)
 	{
-		tmp = (*node)->next;
+		tmp = node->next;
 		free(node);
-		node = &tmp;
+		node = tmp;
 	}
 	free(data->queue);
 }

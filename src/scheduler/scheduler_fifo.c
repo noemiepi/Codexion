@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 16:47:34 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/01 10:35:30 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ static void	*insert_new_node(t_queue *queue, t_coder *coder)
 		return (NULL);
 	node->data = coder;
 	node->next = NULL;
-	if (queue == NULL)
+	if (queue->front == NULL)
 	{
 		queue->front = node;
 		queue->rear = node;
 	}
 	else
+	{
+		queue->rear->next = node;
 		queue->rear = node;
+	}
 	return (NULL);
 }
 
@@ -48,12 +51,12 @@ static t_coder	*delete_node(t_queue *queue)
 {
 	t_fifo	*node;
 
-	if (queue == NULL)
+	if (queue->front == NULL)
 		return (NULL);
 	node = queue->front;
-	queue->front = queue->front->next;
+	queue->front = node->next;
 	if (queue->front == NULL)
 		queue->rear = NULL;
 	free(node);
-	return (node->data);
+	return (0);
 }

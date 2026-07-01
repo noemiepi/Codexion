@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:45:18 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 15:53:59 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/01 10:31:15 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	debug_print_queue(t_queue *manager)
 
 	count = 0;
 	current = manager->front;
+	printf("%p\n", manager->rear);
 	while (current != NULL)
 	{
 		printf("[Queue %d] Coder %d\n", count, current->data->id);

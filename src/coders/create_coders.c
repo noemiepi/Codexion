@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 15:40:23 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/01 13:28:34 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	*init_structures(t_data *data)
 
 	monitoring = 0;
 	data->monitoring_id = monitoring;
+	data->active_sim = true;
 	data->queue = malloc(sizeof(t_queue));
 	if (data->queue == NULL)
 		return (NULL);

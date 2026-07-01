@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 15:56:22 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/01 13:43:41 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define COMPILING "%lld, coder %d is compiling\n"
 # define DEBUGGING "%lld, coder %d is debugging\n"
 # define REFACTORING "%lld, coder %d is refactoring\n"
-# define BURNOUT "%lld, coder %d burned out\n"
+# define BURNOUT "%lld, coder %d burned out\n\n"
 
 /* ----------| LIBRARY |---------- */
 # include <pthread.h>
@@ -60,6 +60,7 @@ typedef struct s_coder
 	int				id;
 	int				nb_compile;
 	long long		burnout_time;
+	bool			burnt;
 	bool			finish;
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
@@ -83,6 +84,7 @@ typedef struct s_data
 	char			*scheduler;
 
 	long long		start_sim;
+	bool			active_sim;
 	pthread_t		monitoring_id;
 
 	pthread_mutex_t	mutex_print;

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:49:27 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/01 10:35:56 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/02 10:02:46 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	memset(&data, 0, sizeof(t_data));
 	if (!(parsing(argc, argv, &data)))
 		return (false);
-	printf("Parsing completed!\n");
+	printf("Parsing completed!\n\n");
 	init_structures(&data);
 	create_mutexes(&data);
 	data.start_sim = get_time();

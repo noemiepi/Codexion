@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_getter.c                                      :+:      :+:    :+:   */
+/*   getter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 13:46:49 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/30 11:53:56 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/02 15:13:35 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,22 @@ long long	get_time(void)
 long long	get_current_time(t_data *data)
 {
 	return (get_time() - data->start_sim);
+}
+
+bool	get_active_sim(t_data *data)
+{
+	bool	active;
+
+	pthread_mutex_lock(&data->mutex_sim);
+	active = data->active_sim;
+	pthread_mutex_unlock(&data->mutex_sim);
+	return (active);
+}
+
+bool	get_finished(t_coder *coder)
+{
+	bool	finished;
+
+	finished = coder->finish;
+	return (finished);
 }

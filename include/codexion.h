@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/01 13:43:41 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/02 16:59:41 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 # define ADD 1
 # define REMOVE 2
 
-# define DONGLE_TAKEN "%lld, coder %d has taken a dongle\n"
-# define COMPILING "%lld, coder %d is compiling\n"
-# define DEBUGGING "%lld, coder %d is debugging\n"
-# define REFACTORING "%lld, coder %d is refactoring\n"
-# define BURNOUT "%lld, coder %d burned out\n\n"
+# define DONGLE_TAKEN "%lld: coder %d has taken a dongle\n"
+# define COMPILING "%lld: coder %d is compiling\n"
+# define DEBUGGING "%lld: coder %d is debugging\n"
+# define REFACTORING "%lld: coder %d is refactoring\n\n"
+# define BURNOUT "\n%lld: coder %d burned out\n\n"
+# define END "\n%lld: every coders met their quota!\n\n"
 
 /* ----------| LIBRARY |---------- */
 # include <pthread.h>
@@ -60,7 +61,6 @@ typedef struct s_coder
 	int				id;
 	int				nb_compile;
 	long long		burnout_time;
-	bool			burnt;
 	bool			finish;
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
@@ -87,7 +87,9 @@ typedef struct s_data
 	bool			active_sim;
 	pthread_t		monitoring_id;
 
+	pthread_cond_t	cond;
 	pthread_mutex_t	mutex_print;
+	pthread_mutex_t	mutex_sim;
 }					t_data;
 
 typedef struct s_queue
@@ -145,6 +147,8 @@ int			ft_atoi(const char *str);
 
 long long	get_time(void);
 long long	get_current_time(t_data *data);
+bool		get_active_sim(t_data *data);
+bool		get_finished(t_coder *coder);
 
 void		free_structures(t_data *data);
 

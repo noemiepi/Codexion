@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 16:59:41 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/03 15:28:41 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define DEBUGGING "%lld: coder %d is debugging\n"
 # define REFACTORING "%lld: coder %d is refactoring\n\n"
 # define BURNOUT "\n%lld: coder %d burned out\n\n"
-# define END "\n%lld: every coders met their quota!\n\n"
+# define END "\nEvery coders met their quota!\n\n"
 
 /* ----------| LIBRARY |---------- */
 # include <pthread.h>
@@ -43,6 +43,7 @@ typedef struct s_coder		t_coder;
 typedef struct s_dongle		t_dongle;
 
 typedef struct s_queue		t_queue;
+typedef struct s_heap		t_heap;
 typedef struct s_fifo		t_fifo;
 typedef struct s_edf		t_edf;
 
@@ -73,6 +74,7 @@ typedef struct s_data
 	t_coder			*coder;
 	t_dongle		*dongle;
 	t_queue			*queue;
+	t_heap			*heap;
 
 	int				nb_coders;
 	long long		time_burnout;
@@ -100,6 +102,15 @@ typedef struct s_queue
 	pthread_mutex_t	mutex_queue;
 }					t_queue;
 
+typedef struct s_heap
+{
+	t_edf			*front;
+	t_edf			*rear;
+	int				place;
+
+	pthread_mutex_t	mutex_heap;
+}					t_heap;
+
 typedef struct s_fifo
 {
 	t_coder			*data;
@@ -108,7 +119,7 @@ typedef struct s_fifo
 
 typedef struct s_edf
 {
-	t_coder			*data;
+	int				data;
 	t_edf			*left;
 	t_edf			*right;
 }					t_edf;
@@ -140,7 +151,7 @@ void		join_threads(t_data *data);
 
 /* ---------| SCHEDULERS |-------- */
 void		scheduler_fifo(t_queue *queue, t_coder *coder, int step);
-void		scheduler_edf(t_coder *coder);
+void		scheduler_edf(t_heap *heap, t_coder *coder, int step);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);

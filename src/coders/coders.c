@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 10:48:22 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/03 15:29:20 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	*coders_action(void *arg)
 	{
 		if (strcmp(FIFO, data->scheduler) == 0)
 			scheduler_fifo(data->queue, coder, ADD);
+		else if (strcmp(EDF, data->scheduler) == 0)
+			scheduler_edf(data->heap, coder, ADD);
 		pthread_mutex_lock(&data->mutex_print);
 		terminal_logs(data, coder);
 		pthread_mutex_unlock(&data->mutex_print);
@@ -42,6 +44,8 @@ void	terminal_logs(t_data *data, t_coder *coder)
 			coder->finish = true;
 		if (strcmp(FIFO, data->scheduler) == 0)
 			scheduler_fifo(data->queue, coder, REMOVE);
+		if (strcmp(EDF, data->scheduler) == 0)
+			scheduler_edf(data->heap, coder, REMOVE);
 		release_dongle(coder);
 		usleep(data->time_compile * 1000);
 	}

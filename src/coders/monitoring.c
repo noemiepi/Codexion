@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 10:34:48 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 15:58:17 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/03 16:01:39 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*monitor(void *arg)
 		if (finish == data->nb_coders)
 		{
 			pthread_mutex_lock(&data->mutex_print);
-			printf(END, get_current_time(data));
+			printf(END);
 			pthread_mutex_unlock(&data->mutex_print);
 			return (NULL);
 		}

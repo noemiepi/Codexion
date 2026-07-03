@@ -89,4 +89,6 @@ Here is a list of every parameters needed to run the program:
 - https://data-flair.training/blogs/binary-tree-in-c/
 
 ### GitHub
-- https://github.com/Overtekk/Codexion
+- [Overtek](https://github.com/Overtekk/Codexion)
+
+- [buchy16](https://github.com/buchy16/Codexion)

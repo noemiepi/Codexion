@@ -6,14 +6,14 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/01 10:35:30 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/03 16:00:24 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
 static void		*insert_new_node(t_queue *queue, t_coder *coder);
-static t_coder	*delete_node(t_queue *queue);
+static void		*delete_node(t_queue *queue);
 
 void	scheduler_fifo(t_queue *queue, t_coder *coder, int step)
 {
@@ -47,7 +47,7 @@ static void	*insert_new_node(t_queue *queue, t_coder *coder)
 	return (NULL);
 }
 
-static t_coder	*delete_node(t_queue *queue)
+static void	*delete_node(t_queue *queue)
 {
 	t_fifo	*node;
 
@@ -58,5 +58,5 @@ static t_coder	*delete_node(t_queue *queue)
 	if (queue->front == NULL)
 		queue->rear = NULL;
 	free(node);
-	return (0);
+	return (NULL);
 }

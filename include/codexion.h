@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/03 15:28:41 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/09 21:33:25 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ typedef struct s_data
 	bool			active_sim;
 	pthread_t		monitoring_id;
 
-	pthread_cond_t	cond;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	mutex_sim;
 }					t_data;
@@ -104,9 +103,8 @@ typedef struct s_queue
 
 typedef struct s_heap
 {
-	t_edf			*front;
-	t_edf			*rear;
-	int				place;
+	t_edf			*node;
+	int				size;
 
 	pthread_mutex_t	mutex_heap;
 }					t_heap;
@@ -119,7 +117,7 @@ typedef struct s_fifo
 
 typedef struct s_edf
 {
-	int				data;
+	int				deadline;
 	t_edf			*left;
 	t_edf			*right;
 }					t_edf;

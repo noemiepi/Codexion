@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 10:37:03 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/09 14:40:03 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	*init_structures(t_data *data)
 		return (NULL);
 	data->queue->front = NULL;
 	data->queue->rear = NULL;
+	data->heap = malloc(sizeof(t_heap));
+	if (data->heap == NULL)
+		return (NULL);
+	data->heap->node = NULL;
+	data->heap->size = 0;
 	create_coders(data);
 	return (NULL);
 }

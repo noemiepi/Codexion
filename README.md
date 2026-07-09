@@ -89,6 +89,11 @@ Here is a list of every parameters needed to run the program:
 - https://data-flair.training/blogs/binary-tree-in-c/
 
 ### GitHub
-- [Overtek](https://github.com/Overtekk/Codexion)
+- [Overtekk](https://github.com/Overtekk/Codexion)
 
 - [buchy16](https://github.com/buchy16/Codexion)
+
+
+what needs to be fixed:
+- take away from the list of burnout coders that have reach their goal (noticeable in fifo)
+- adding coders to the edf heap doesn't work correctly

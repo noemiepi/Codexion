@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 18:56:04 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/09 21:32:48 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/25 21:17:18 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	create_mutexes(t_data *data)
 	pthread_mutex_init(&data->mutex_sim, NULL);
 	pthread_mutex_init(&data->queue->mutex_queue, NULL);
 	pthread_mutex_init(&data->heap->mutex_heap, NULL);
+	pthread_cond_init(&data->queue->cond_queue, NULL);
+	pthread_cond_init(&data->heap->cond_heap, NULL);
 	while (data->nb_coders != i)
 	{
 		pthread_mutex_init(&data->dongle[i].mutex_dongle, NULL);
@@ -37,6 +39,8 @@ void	destroy_mutexes(t_data *data)
 	pthread_mutex_destroy(&data->mutex_sim);
 	pthread_mutex_destroy(&data->queue->mutex_queue);
 	pthread_mutex_destroy(&data->heap->mutex_heap);
+	pthread_cond_destroy(&data->queue->cond_queue);
+	pthread_cond_destroy(&data->heap->cond_heap);
 	while (data->nb_coders != i)
 	{
 		pthread_mutex_destroy(&data->dongle[i].mutex_dongle);

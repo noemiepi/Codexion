@@ -6,26 +6,34 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 17:15:13 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/25 23:36:17 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-void	take_dongle(t_coder *coder)
+bool	take_dongle(t_coder *coder)
 {
 	if (try_take_dongle(coder->left_dongle, coder->data) == true)
 	{
 		if (coder->right_dongle == NULL)
+		{
 			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
+			return (true);
+		}
 		if (try_take_dongle(coder->right_dongle, coder->data) == true)
 		{
 			printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
 			printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
+			return (false);
 		}
 		else
+		{
 			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
+			return (true);
+		}
 	}
+	return (true);
 }
 
 bool	try_take_dongle(t_dongle *dongle, t_data *data)
@@ -54,5 +62,17 @@ void	release_dongle(t_coder *coder)
 	{
 		coder->right_dongle->cooldown = curr_time + data->dongle_cooldown;
 		pthread_mutex_unlock(&coder->right_dongle->mutex_dongle);
+	}
+	if (strcmp(FIFO, data->scheduler) == 0)
+	{
+		pthread_mutex_lock(&data->queue->mutex_queue);
+		pthread_cond_broadcast(&data->queue->cond_queue);
+		pthread_mutex_unlock(&data->queue->mutex_queue);
+	}
+	else
+	{
+		pthread_mutex_lock(&data->heap->mutex_heap);
+		pthread_cond_broadcast(&data->heap->cond_heap);
+		pthread_mutex_unlock(&data->heap->mutex_heap);
 	}
 }

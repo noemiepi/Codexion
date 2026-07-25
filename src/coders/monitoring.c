@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 10:34:48 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/03 16:01:39 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/25 22:45:24 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	*monitor(void *arg)
 			return (NULL);
 		if (finish == data->nb_coders)
 		{
+			pthread_mutex_lock(&data->heap->mutex_heap);
+			pthread_cond_broadcast(&data->heap->cond_heap);
+			pthread_mutex_unlock(&data->heap->mutex_heap);
+			pthread_mutex_lock(&data->queue->mutex_queue);
+			pthread_cond_broadcast(&data->queue->cond_queue);
+			pthread_mutex_unlock(&data->queue->mutex_queue);
 			pthread_mutex_lock(&data->mutex_print);
 			printf(END);
 			pthread_mutex_unlock(&data->mutex_print);

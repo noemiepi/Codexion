@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/09 21:33:25 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/25 23:35:30 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_queue
 	t_fifo			*rear;
 
 	pthread_mutex_t	mutex_queue;
+	pthread_cond_t	cond_queue;
 }					t_queue;
 
 typedef struct s_heap
@@ -107,6 +108,7 @@ typedef struct s_heap
 	int				size;
 
 	pthread_mutex_t	mutex_heap;
+	pthread_cond_t	cond_heap;
 }					t_heap;
 
 typedef struct s_fifo
@@ -138,7 +140,7 @@ void		*monitor(void *arg);
 void		*coders_action(void *arg);
 void		terminal_logs(t_data *data, t_coder *coder);
 
-void		take_dongle(t_coder *coder);
+bool		take_dongle(t_coder *coder);
 bool		try_take_dongle(t_dongle *dongle, t_data *data);
 void		release_dongle(t_coder *coder);
 

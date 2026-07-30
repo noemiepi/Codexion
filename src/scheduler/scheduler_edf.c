@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/09 18:28:09 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 10:01:38 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	insert(t_heap *heap)
 	t_edf	tmp;
 	int		parent_node;
 	int		i;
-	
+
 	parent_node = heap->size / 2;
 	i = heap->size;
 	while (i > 0 && heap->node[i].deadline < heap->node[parent_node].deadline)
@@ -92,14 +92,14 @@ static void	check_deadline(t_heap *heap, int i)
 	int		left;
 	int		right;
 	int		smallest;
-	
+
 	while ((i * 2) + 1 < heap->size)
 	{
 		left = (i * 2) + 1;
 		right = (i * 2) + 2;
 		smallest = left;
-		if (right < heap->size && (heap->node[right].deadline < 
-			heap->node[left].deadline))
+		if (right < heap->size && \
+			(heap->node[right].deadline < heap->node[left].deadline))
 			smallest = right;
 		if (heap->node[smallest].deadline < heap->node[i].deadline)
 		{
@@ -108,6 +108,6 @@ static void	check_deadline(t_heap *heap, int i)
 			heap->node[smallest] = tmp;
 		}
 		else
-			break;
+			break ;
 	}
 }

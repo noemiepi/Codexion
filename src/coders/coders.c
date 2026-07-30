@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/25 20:38:40 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 10:41:25 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	terminal_logs(t_data *data, t_coder *coder)
 {
 	if (get_active_sim(data))
 	{
-		take_dongle(coder);
 		printf(COMPILING, get_current_time(data), coder->id);
 		coder->burnout_time = get_current_time(data);
 		coder->nb_compile += 1;
@@ -46,7 +45,6 @@ void	terminal_logs(t_data *data, t_coder *coder)
 			scheduler_fifo(data->queue, coder, REMOVE);
 		if (strcmp(EDF, data->scheduler) == 0)
 			scheduler_edf(data->heap, coder, REMOVE);
-		release_dongle(coder);
 		usleep(data->time_compile * 1000);
 	}
 	if (get_active_sim(data))
@@ -59,4 +57,5 @@ void	terminal_logs(t_data *data, t_coder *coder)
 		printf(REFACTORING, get_current_time(data), coder->id);
 		usleep(data->time_refactor * 1000);
 	}
+	release_dongle(coder);
 }

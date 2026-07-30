@@ -6,11 +6,13 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/25 23:36:17 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 10:39:04 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
+
+static void	cond_release(t_data *data);
 
 bool	take_dongle(t_coder *coder)
 {
@@ -63,6 +65,11 @@ void	release_dongle(t_coder *coder)
 		coder->right_dongle->cooldown = curr_time + data->dongle_cooldown;
 		pthread_mutex_unlock(&coder->right_dongle->mutex_dongle);
 	}
+	cond_release(data);
+}
+
+static void	cond_release(t_data *data)
+{
 	if (strcmp(FIFO, data->scheduler) == 0)
 	{
 		pthread_mutex_lock(&data->queue->mutex_queue);

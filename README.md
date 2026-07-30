@@ -78,6 +78,9 @@ Here is a list of every parameters needed to run the program:
 #### Mutex
 - https://www.codequoi.com/en/threads-mutexes-and-concurrent-programming-in-c/#what-is-a-mutex-
 
+#### Deadlock
+- https://stackoverflow.com/questions/34512/what-is-a-deadlock
+
 #### FIFO (First In, First Out)
 - https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn
 
@@ -95,5 +98,4 @@ Here is a list of every parameters needed to run the program:
 
 
 what needs to be fixed:
-- take away from the list of burnout coders that have reach their goal (noticeable in fifo)
-- adding coders to the edf heap doesn't work correctly
+- adding coders to the edf heap doesn't work correctly (segfault)

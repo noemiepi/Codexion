@@ -6,13 +6,14 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 10:34:48 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 10:37:46 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 16:23:11 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
 static bool	find_burnout(t_data *data, int *finish);
+static void	free_cond(t_data *data);
 
 void	*monitor(void *arg)
 {
@@ -27,12 +28,10 @@ void	*monitor(void *arg)
 			return (NULL);
 		if (finish == data->nb_coders)
 		{
-			pthread_mutex_lock(&data->heap->mutex_heap);
-			pthread_cond_broadcast(&data->heap->cond_heap);
-			pthread_mutex_unlock(&data->heap->mutex_heap);
-			pthread_mutex_lock(&data->queue->mutex_queue);
-			pthread_cond_broadcast(&data->queue->cond_queue);
-			pthread_mutex_unlock(&data->queue->mutex_queue);
+			pthread_mutex_lock(&data->mutex_sim);
+			data->active_sim = false;
+			pthread_mutex_unlock(&data->mutex_sim);
+			free_cond(data);
 			pthread_mutex_lock(&data->mutex_print);
 			printf(END);
 			pthread_mutex_unlock(&data->mutex_print);
@@ -56,7 +55,9 @@ static bool	find_burnout(t_data *data, int *finish)
 			(*finish)++;
 		if (time >= data->time_burnout)
 		{
+			pthread_mutex_lock(&data->mutex_sim);
 			data->active_sim = false;
+			pthread_mutex_unlock(&data->mutex_sim);
 			pthread_mutex_lock(&data->mutex_print);
 			printf(BURNOUT, get_current_time(data), data->coder->id);
 			pthread_mutex_unlock(&data->mutex_print);
@@ -65,4 +66,14 @@ static bool	find_burnout(t_data *data, int *finish)
 		i++;
 	}
 	return (false);
+}
+
+static void	free_cond(t_data *data)
+{
+	pthread_mutex_lock(&data->heap->mutex_heap);
+	pthread_cond_broadcast(&data->heap->cond_heap);
+	pthread_mutex_unlock(&data->heap->mutex_heap);
+	pthread_mutex_lock(&data->queue->mutex_queue);
+	pthread_cond_broadcast(&data->queue->cond_queue);
+	pthread_mutex_unlock(&data->queue->mutex_queue);
 }

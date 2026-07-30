@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 10:51:38 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 16:06:39 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # define COMPILING "%lld: coder %d is compiling\n"
 # define DEBUGGING "%lld: coder %d is debugging\n"
 # define REFACTORING "%lld: coder %d is refactoring\n\n"
-# define BURNOUT "\n%lld: coder %d burned out\n\n"
-# define END "\nEvery coders met their quota!\n\n"
+# define BURNOUT "\n\e[1;31m%lld: coder %d burned out\e[0m\n\n"
+# define END "\e[1;32mEvery coders met their quota!\e[0m\n\n"
 
 /* ----------| LIBRARY |---------- */
 # include <pthread.h>
@@ -119,9 +119,8 @@ typedef struct s_fifo
 
 typedef struct s_edf
 {
+	t_coder			*data;
 	int				deadline;
-	t_edf			*left;
-	t_edf			*right;
 }					t_edf;
 
 /* ----------| PARSING |---------- */

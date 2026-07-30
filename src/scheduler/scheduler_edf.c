@@ -6,14 +6,13 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 10:01:38 by npillet          ###   ########.fr       */
+/*   Updated: 2026/07/30 15:52:39 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static void	*insert_new_node(t_heap *heap, int burnout);
-static void	insert(t_heap *heap);
+static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout);
 static void	delete_node(t_heap *heap);
 static void	check_deadline(t_heap *heap, int i);
 
@@ -21,36 +20,35 @@ void	scheduler_edf(t_heap *heap, t_coder *coder, int step)
 {
 	pthread_mutex_lock(&heap->mutex_heap);
 	if (step == ADD)
-		insert_new_node(heap, coder->burnout_time);
+	{
+		insert_new_node(heap, coder, coder->burnout_time);
+		if (get_active_sim(coder->data))
+			take_dongle(coder);
+	}
 	if (step == REMOVE)
+	{
 		delete_node(heap);
+		pthread_cond_broadcast(&heap->cond_heap);
+	}
 	pthread_mutex_unlock(&heap->mutex_heap);
 }
 
-static void	*insert_new_node(t_heap *heap, int burnout)
+static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout)
 {
 	t_edf	*node;
-
-	node = malloc(sizeof(t_edf));
-	if (node == NULL)
-		return (NULL);
-	node->deadline = burnout;
-	node->left = NULL;
-	node->right = NULL;
-	heap->size += 1;
-	insert(heap);
-	return (NULL);
-}
-
-static void	insert(t_heap *heap)
-{
 	t_edf	tmp;
 	int		parent_node;
 	int		i;
 
+	node = malloc(sizeof(t_edf));
+	if (node == NULL)
+		return (NULL);
+	node->data = coder;
+	node->deadline = burnout;
+	heap->size += 1;
 	parent_node = heap->size / 2;
 	i = heap->size;
-	while (i > 0 && heap->node[i].deadline < heap->node[parent_node].deadline)
+	while (i > 1 && heap->node[i].deadline < heap->node[parent_node].deadline)
 	{
 		tmp = heap->node[i];
 		heap->node[i] = heap->node[parent_node];
@@ -58,6 +56,7 @@ static void	insert(t_heap *heap)
 		i = i / 2;
 		parent_node = parent_node / 2;
 	}
+	return (NULL);
 }
 
 static void	delete_node(t_heap *heap)

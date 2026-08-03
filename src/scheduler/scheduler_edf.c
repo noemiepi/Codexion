@@ -6,30 +6,35 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 15:52:39 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 16:50:44 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
 static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout);
-static void	delete_node(t_heap *heap);
+static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
+static int	is_priority(t_heap *heap, t_coder *coder);
 
-void	scheduler_edf(t_heap *heap, t_coder *coder, int step)
+void	scheduler_edf(t_heap *heap, t_coder *coder)
 {
 	pthread_mutex_lock(&heap->mutex_heap);
-	if (step == ADD)
+	insert_new_node(heap, coder, coder->burnout_time);
+	pthread_cond_broadcast(&heap->cond_heap);
+	pthread_mutex_unlock(&heap->mutex_heap);
+	while (get_active_sim(coder->data))
 	{
-		insert_new_node(heap, coder, coder->burnout_time);
-		if (get_active_sim(coder->data))
-			take_dongle(coder);
+		if (is_priority(heap, coder))
+		{
+			if (take_dongle(coder) == false)
+				break ;
+		}
+		usleep(1000);
 	}
-	if (step == REMOVE)
-	{
-		delete_node(heap);
-		pthread_cond_broadcast(&heap->cond_heap);
-	}
+	pthread_mutex_lock(&heap->mutex_heap);
+	delete_node(heap, coder);
+	pthread_cond_broadcast(&heap->cond_heap);
 	pthread_mutex_unlock(&heap->mutex_heap);
 }
 
@@ -37,50 +42,48 @@ static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout)
 {
 	t_edf	*node;
 	t_edf	tmp;
-	int		parent_node;
 	int		i;
 
 	node = malloc(sizeof(t_edf));
 	if (node == NULL)
 		return (NULL);
-	node->data = coder;
+	node->coder = coder;
 	node->deadline = burnout;
+	heap->node[heap->size] = *node;
 	heap->size += 1;
-	parent_node = heap->size / 2;
-	i = heap->size;
-	while (i > 1 && heap->node[i].deadline < heap->node[parent_node].deadline)
+	i = heap->size - 1;
+	while (i > 0 && heap->node[i].deadline < heap->node[(i - 1) / 2].deadline)
 	{
 		tmp = heap->node[i];
-		heap->node[i] = heap->node[parent_node];
-		heap->node[parent_node] = tmp;
-		i = i / 2;
-		parent_node = parent_node / 2;
+		heap->node[i] = heap->node[(i - 1) / 2];
+		heap->node[(i - 1) / 2] = tmp;
+		i = (i - 1) / 2;
 	}
 	return (NULL);
 }
 
-static void	delete_node(t_heap *heap)
+static void	delete_node(t_heap *heap, t_coder *coder)
 {
 	t_edf	tmp;
-	int		child_node;
 	int		i;
 
-	i = 1;
-	child_node = 2;
-	heap->node[1] = heap->node[heap->size];
-	heap->size--;
-	while (i > 0)
+	i = 0;
+	while (i < heap->size)
 	{
-		if (child_node + 1 <= heap->size)
-			child_node++;
-		if (heap->node[i].deadline >= heap->node[child_node].deadline)
-		{
-			tmp = heap->node[i];
-			heap->node[i] = heap->node[child_node];
-			heap->node[child_node] = tmp;
-		}
-		i = child_node;
-		child_node = child_node * 2;
+		if (heap->node[i].coder == coder)
+			break ;
+		i++;
+	}
+	if (i == heap->size)
+		return ;
+	heap->size--;
+	heap->node[i] = heap->node[heap->size];
+	while (i > 0 && heap->node[i].deadline < heap->node[(i - 1) / 2].deadline)
+	{
+		tmp = heap->node[i];
+		heap->node[i] = heap->node[(i - 1) / 2];
+		heap->node[(i - 1) / 2] = tmp;
+		i = (i - 1) / 2;
 	}
 	check_deadline(heap, i);
 }
@@ -92,7 +95,7 @@ static void	check_deadline(t_heap *heap, int i)
 	int		right;
 	int		smallest;
 
-	while ((i * 2) + 1 < heap->size)
+	while ((i * 2) + 1 <= heap->size)
 	{
 		left = (i * 2) + 1;
 		right = (i * 2) + 2;
@@ -105,8 +108,25 @@ static void	check_deadline(t_heap *heap, int i)
 			tmp = heap->node[i];
 			heap->node[i] = heap->node[smallest];
 			heap->node[smallest] = tmp;
+			i = smallest;
 		}
 		else
 			break ;
 	}
+}
+
+static int	is_priority(t_heap *heap, t_coder *coder)
+{
+	long long	time;
+	int			left;
+	int			right;
+
+	time = coder->burnout_time;
+	left = (coder->id * 2) + 1;
+	right = (coder->id * 2) + 2;
+	if (heap->node[left].deadline < time)
+		return (false);
+	if (heap->node[right].deadline < time)
+		return (false);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 10:03:02 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 14:13:37 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	*init_structures(t_data *data)
 	data->heap = malloc(sizeof(t_heap));
 	if (data->heap == NULL)
 		return (NULL);
-	data->heap->node = NULL;
+	data->heap->node = malloc(sizeof(t_edf) * data->nb_coders);
+	if (data->heap->node == NULL)
+		return (NULL);
 	data->heap->size = 0;
 	create_coders(data);
 	return (NULL);

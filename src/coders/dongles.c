@@ -6,13 +6,11 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 16:02:07 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 14:12:46 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
-
-static void	cond_release(t_data *data);
 
 bool	take_dongle(t_coder *coder)
 {
@@ -27,13 +25,7 @@ bool	take_dongle(t_coder *coder)
 			return (true);
 		}
 		if (try_take_dongle(coder->right_dongle, coder->data) == true)
-		{
-			pthread_mutex_lock(&data->mutex_print);
-			printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
-			printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
-			pthread_mutex_unlock(&data->mutex_print);
 			return (false);
-		}
 		else
 		{
 			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
@@ -45,21 +37,18 @@ bool	take_dongle(t_coder *coder)
 
 bool	try_take_dongle(t_dongle *dongle, t_data *data)
 {
+	pthread_mutex_lock(&dongle->mutex_dongle);
 	if (get_current_time(data) >= dongle->cooldown)
-	{
-		pthread_mutex_lock(&dongle->mutex_dongle);
 		return (true);
-	}
+	pthread_mutex_unlock(&dongle->mutex_dongle);
 	return (false);
 }
 
-void	release_dongle(t_coder *coder)
+void	release_dongle(t_data *data, t_coder *coder)
 {
 	long long	curr_time;
-	t_data		*data;
 
-	data = coder->data;
-	curr_time = get_current_time(coder->data);
+	curr_time = get_current_time(data);
 	if (coder->left_dongle != NULL)
 	{
 		coder->left_dongle->cooldown = curr_time + data->dongle_cooldown;
@@ -70,11 +59,6 @@ void	release_dongle(t_coder *coder)
 		coder->right_dongle->cooldown = curr_time + data->dongle_cooldown;
 		pthread_mutex_unlock(&coder->right_dongle->mutex_dongle);
 	}
-	cond_release(data);
-}
-
-static void	cond_release(t_data *data)
-{
 	if (strcmp(FIFO, data->scheduler) == 0)
 	{
 		pthread_mutex_lock(&data->queue->mutex_queue);

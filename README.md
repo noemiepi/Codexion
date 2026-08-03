@@ -59,9 +59,8 @@ Here is a list of every parameters needed to run the program:
 | **dongle_cooldown** | Above or equal to 1 | The time a dongle to be used once again (in milliseconds) |
 | **scheduler** | `fifo` (First In, First Out) or `edf` (Earliest Deadline First) | Choose the priority order of the coders |
 
-
 ## Blocking cases handled
-*describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions, starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
+*describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions (Mutual Exclusion, Circular Wait, Hold and Wait, No pre-emption), starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
 
 ## Thread synchronization mechanisms
 *explaining the specific threading primitives used in your implementation (pthread_mutex_t, pthread_cond_t, custom event implementation) and how they coordinate access to shared resources (dongles, logging, monitor state).*
@@ -81,6 +80,8 @@ Here is a list of every parameters needed to run the program:
 #### Deadlock
 - https://stackoverflow.com/questions/34512/what-is-a-deadlock
 
+- https://csresources.github.io/SystemProgrammingWiki/SystemProgramming/Deadlock,-Part-2:-Deadlock-Conditions/
+
 #### FIFO (First In, First Out)
 - https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn
 
@@ -98,4 +99,4 @@ Here is a list of every parameters needed to run the program:
 
 
 what needs to be fixed:
-- adding coders to the edf heap doesn't work correctly (segfault)
+- EDF may be badly implemented

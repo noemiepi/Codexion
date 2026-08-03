@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 10:34:48 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 16:23:11 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 11:56:04 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static bool	find_burnout(t_data *data, int *finish)
 			pthread_mutex_lock(&data->mutex_sim);
 			data->active_sim = false;
 			pthread_mutex_unlock(&data->mutex_sim);
+			free_cond(data);
 			pthread_mutex_lock(&data->mutex_print);
 			printf(BURNOUT, get_current_time(data), data->coder->id);
 			pthread_mutex_unlock(&data->mutex_print);

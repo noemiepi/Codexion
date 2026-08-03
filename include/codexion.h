@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 16:06:39 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 14:58:46 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,13 @@ typedef struct s_heap
 
 typedef struct s_fifo
 {
-	t_coder			*data;
+	t_coder			*coder;
 	t_fifo			*next;
 }					t_fifo;
 
 typedef struct s_edf
 {
-	t_coder			*data;
+	t_coder			*coder;
 	int				deadline;
 }					t_edf;
 
@@ -141,7 +141,7 @@ void		terminal_logs(t_data *data, t_coder *coder);
 
 bool		take_dongle(t_coder *coder);
 bool		try_take_dongle(t_dongle *dongle, t_data *data);
-void		release_dongle(t_coder *coder);
+void		release_dongle(t_data *data, t_coder *coder);
 
 void		create_mutexes(t_data *data);
 void		destroy_mutexes(t_data *data);
@@ -150,7 +150,7 @@ void		join_threads(t_data *data);
 
 /* ---------| SCHEDULERS |-------- */
 void		scheduler_fifo(t_queue *queue, t_coder *coder, int step);
-void		scheduler_edf(t_heap *heap, t_coder *coder, int step);
+void		scheduler_edf(t_heap *heap, t_coder *coder);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);
@@ -164,5 +164,6 @@ void		free_structures(t_data *data);
 
 void		debug_print_struct(t_data *data);
 void		debug_print_queue(t_queue *manager);
+void		debug_print_heap(t_heap *heap);
 
 #endif

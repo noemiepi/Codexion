@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/30 16:02:34 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/03 15:22:07 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*coders_action(void *arg)
 		if (strcmp(FIFO, data->scheduler) == 0)
 			scheduler_fifo(data->queue, coder, ADD);
 		else if (strcmp(EDF, data->scheduler) == 0)
-			scheduler_edf(data->heap, coder, ADD);
+			scheduler_edf(data->heap, coder);
 		pthread_mutex_lock(&data->mutex_print);
 		terminal_logs(data, coder);
 		pthread_mutex_unlock(&data->mutex_print);
@@ -36,6 +36,8 @@ void	terminal_logs(t_data *data, t_coder *coder)
 {
 	if (get_active_sim(data))
 	{
+		printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
+		printf(DONGLE_TAKEN, get_current_time(coder->data), coder->id);
 		printf(COMPILING, get_current_time(data), coder->id);
 		coder->burnout_time = get_current_time(data);
 		coder->nb_compile += 1;
@@ -43,9 +45,10 @@ void	terminal_logs(t_data *data, t_coder *coder)
 			coder->finish = true;
 		if (strcmp(FIFO, data->scheduler) == 0)
 			scheduler_fifo(data->queue, coder, REMOVE);
-		else if (strcmp(EDF, data->scheduler) == 0)
-			scheduler_edf(data->heap, coder, REMOVE);
-		release_dongle(coder);
+	}
+	release_dongle(data, coder);
+	if (get_active_sim(data))
+	{
 		usleep(data->time_compile * 1000);
 		printf(DEBUGGING, get_current_time(data), coder->id);
 		usleep(data->time_debug * 1000);

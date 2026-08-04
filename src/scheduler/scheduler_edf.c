@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/03 16:50:44 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/04 08:28:32 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout)
 	i = heap->size - 1;
 	while (i > 0 && heap->node[i].deadline < heap->node[(i - 1) / 2].deadline)
 	{
-		tmp = heap->node[i];
-		heap->node[i] = heap->node[(i - 1) / 2];
-		heap->node[(i - 1) / 2] = tmp;
-		i = (i - 1) / 2;
+			tmp = heap->node[i];
+			heap->node[i] = heap->node[(i - 1) / 2];
+			heap->node[(i - 1) / 2] = tmp;
+			i = (i - 1) / 2;
 	}
 	return (NULL);
 }
@@ -122,8 +122,8 @@ static int	is_priority(t_heap *heap, t_coder *coder)
 	int			right;
 
 	time = coder->burnout_time;
-	left = (coder->id * 2) + 1;
-	right = (coder->id * 2) + 2;
+	left = (coder->id - 1 + coder->data->nb_coders) % coder->data->nb_coders;
+	right = (coder->id + 1) % coder->data->nb_coders;
 	if (heap->node[left].deadline < time)
 		return (false);
 	if (heap->node[right].deadline < time)

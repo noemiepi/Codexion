@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 11:58:50 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 14:50:48 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # define DONGLE_TAKEN "%lld: coder %d has taken a dongle\n"
 # define COMPILING "%lld: coder %d is compiling\n"
 # define DEBUGGING "%lld: coder %d is debugging\n"
-# define REFACTORING "%lld: coder %d is refactoring\n\n"
+# define REFACTORING "%lld: coder %d is refactoring\n"
 # define BURNOUT "\n\e[1;31m%lld: coder %d burned out\e[0m\n\n"
-# define END "\e[1;32mEvery coders met their quota!\e[0m\n\n"
+# define END "\n\e[1;32mEvery coders met their quota!\e[0m\n\n"
 
 /* ----------| LIBRARY |---------- */
 # include <pthread.h>
@@ -139,7 +139,6 @@ void		*init_structures(t_data *data);
 void		*monitor(void *arg);
 
 void		*coders_action(void *arg);
-void		terminal_logs(t_data *data, t_coder *coder);
 
 bool		take_dongle(t_data *data, t_coder *coder);
 void		release_dongle(t_data *data, t_coder *coder);
@@ -155,6 +154,8 @@ void		scheduler_edf(t_heap *heap, t_coder *coder);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);
+
+int			is_priority(t_heap *heap, t_data *data, t_coder *coder);
 
 long long	get_time(void);
 long long	get_current_time(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 12:04:00 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 14:42:28 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout);
 static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
-static int	is_priority(t_data *data, t_coder *coder);
 
 void	scheduler_edf(t_heap *heap, t_coder *coder)
 {
@@ -28,7 +27,7 @@ void	scheduler_edf(t_heap *heap, t_coder *coder)
 	pthread_mutex_unlock(&heap->mutex_heap);
 	while (get_active_sim(coder->data))
 	{
-		if (is_priority(data, coder))
+		if (is_priority(heap, data, coder))
 		{
 			if (take_dongle(data, coder) == false)
 				break ;
@@ -111,30 +110,4 @@ static void	check_deadline(t_heap *heap, int i)
 		else
 			break ;
 	}
-}
-
-static int	is_priority(t_data *data, t_coder *coder)
-{
-	long long	time;
-	long long	left_time;
-	long long	right_time;
-	int			left;
-	int			right;
-
-	left = (coder->id - 1 + data->nb_coders) % data->nb_coders;
-	right = (coder->id + 1) % data->nb_coders;
-	pthread_mutex_lock(&coder->mutex_burnout);
-	time = coder->burnout_time;
-	pthread_mutex_unlock(&coder->mutex_burnout);
-	pthread_mutex_lock(&data->coder[left].mutex_burnout);
-	left_time = data->coder[left].burnout_time;
-	pthread_mutex_unlock(&data->coder[left].mutex_burnout);
-	pthread_mutex_lock(&data->coder[right].mutex_burnout);
-	right_time = data->coder[right].burnout_time;
-	pthread_mutex_unlock(&data->coder[right].mutex_burnout);
-	if (left_time < time)
-		return (false);
-	if (right_time < time)
-		return (false);
-	return (true);
 }

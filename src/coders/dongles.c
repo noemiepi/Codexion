@@ -6,36 +6,58 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/03 14:12:46 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 09:34:57 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-bool	take_dongle(t_coder *coder)
-{
-	t_data	*data;
+static bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second);
+static bool	try_take_dongle(t_dongle *dongle, t_data *data);
 
-	data = coder->data;
-	if (try_take_dongle(coder->left_dongle, coder->data) == true)
+bool	take_dongle(t_data *data, t_coder *coder)
+{
+	t_dongle	*first;
+	t_dongle	*second;
+
+	first = NULL;
+	second = NULL;
+	if (data->nb_coders > 1 && coder->id == data->nb_coders - 1)
 	{
-		if (coder->right_dongle == NULL)
+		first = coder->right_dongle;
+		second = coder->left_dongle;
+	}
+	else
+	{
+		first = coder->left_dongle;
+		second = coder->right_dongle;
+	}
+	return (taking_dongle(coder, first, second));
+}
+
+static bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second)
+{
+	if (try_take_dongle(first, coder->data) == true)
+	{
+		if (second == NULL)
 		{
 			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
+			pthread_mutex_unlock(&first->mutex_dongle);
 			return (true);
 		}
-		if (try_take_dongle(coder->right_dongle, coder->data) == true)
+		if (try_take_dongle(second, coder->data) == true)
 			return (false);
 		else
 		{
 			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
+			pthread_mutex_unlock(&first->mutex_dongle);
 			return (true);
 		}
 	}
 	return (true);
 }
 
-bool	try_take_dongle(t_dongle *dongle, t_data *data)
+static bool	try_take_dongle(t_dongle *dongle, t_data *data)
 {
 	pthread_mutex_lock(&dongle->mutex_dongle);
 	if (get_current_time(data) >= dongle->cooldown)

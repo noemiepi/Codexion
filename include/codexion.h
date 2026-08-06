@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/03 14:58:46 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 09:17:16 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,7 @@ void		*monitor(void *arg);
 void		*coders_action(void *arg);
 void		terminal_logs(t_data *data, t_coder *coder);
 
-bool		take_dongle(t_coder *coder);
-bool		try_take_dongle(t_dongle *dongle, t_data *data);
+bool		take_dongle(t_data *data, t_coder *coder);
 void		release_dongle(t_data *data, t_coder *coder);
 
 void		create_mutexes(t_data *data);

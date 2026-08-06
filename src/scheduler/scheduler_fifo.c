@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/03 14:56:21 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 09:17:42 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	add_to_fifo(t_data *data, t_coder *coder, t_queue *queue)
 {
 	insert_new_node(queue, coder);
 	while (get_active_sim(data) && \
-			(data->queue->front->coder != coder || take_dongle(coder)))
+			(data->queue->front->coder != coder || take_dongle(data,coder)))
 	{
 		if (get_active_sim(data) && queue->front->coder == coder)
 		{

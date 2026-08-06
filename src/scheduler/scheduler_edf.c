@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/04 08:28:32 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 09:17:36 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,22 @@
 static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout);
 static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
-static int	is_priority(t_heap *heap, t_coder *coder);
+static int	is_priority(t_data *data, t_coder *coder);
 
 void	scheduler_edf(t_heap *heap, t_coder *coder)
 {
+	t_data	*data;
+
+	data = coder->data;
 	pthread_mutex_lock(&heap->mutex_heap);
 	insert_new_node(heap, coder, coder->burnout_time);
 	pthread_cond_broadcast(&heap->cond_heap);
 	pthread_mutex_unlock(&heap->mutex_heap);
 	while (get_active_sim(coder->data))
 	{
-		if (is_priority(heap, coder))
+		if (is_priority(data, coder))
 		{
-			if (take_dongle(coder) == false)
+			if (take_dongle(data, coder) == false)
 				break ;
 		}
 		usleep(1000);
@@ -54,10 +57,10 @@ static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout)
 	i = heap->size - 1;
 	while (i > 0 && heap->node[i].deadline < heap->node[(i - 1) / 2].deadline)
 	{
-			tmp = heap->node[i];
-			heap->node[i] = heap->node[(i - 1) / 2];
-			heap->node[(i - 1) / 2] = tmp;
-			i = (i - 1) / 2;
+		tmp = heap->node[i];
+		heap->node[i] = heap->node[(i - 1) / 2];
+		heap->node[(i - 1) / 2] = tmp;
+		i = (i - 1) / 2;
 	}
 	return (NULL);
 }
@@ -95,7 +98,7 @@ static void	check_deadline(t_heap *heap, int i)
 	int		right;
 	int		smallest;
 
-	while ((i * 2) + 1 <= heap->size)
+	while ((i * 2) + 1 < heap->size)
 	{
 		left = (i * 2) + 1;
 		right = (i * 2) + 2;
@@ -115,18 +118,18 @@ static void	check_deadline(t_heap *heap, int i)
 	}
 }
 
-static int	is_priority(t_heap *heap, t_coder *coder)
+static int	is_priority(t_data *data, t_coder *coder)
 {
 	long long	time;
 	int			left;
 	int			right;
 
 	time = coder->burnout_time;
-	left = (coder->id - 1 + coder->data->nb_coders) % coder->data->nb_coders;
-	right = (coder->id + 1) % coder->data->nb_coders;
-	if (heap->node[left].deadline < time)
+	left = (coder->id - 1 + data->nb_coders) % data->nb_coders;
+	right = (coder->id + 1) % data->nb_coders;
+	if (data->coder[left].burnout_time < time)
 		return (false);
-	if (heap->node[right].deadline < time)
+	if (data->coder[right].burnout_time < time)
 		return (false);
 	return (true);
 }

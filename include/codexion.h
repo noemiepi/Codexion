@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 11:33:38 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 11:58:50 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,12 @@ typedef struct s_coder
 	int				nb_compile;
 	long long		burnout_time;
 	bool			finish;
+	bool			has_dongle;
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
 
 	pthread_t		thread_id;
+	pthread_mutex_t	mutex_burnout;
 }					t_coder;
 
 typedef struct s_data

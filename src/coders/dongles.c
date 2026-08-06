@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 09:34:57 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 12:00:42 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,16 @@ static bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second)
 	{
 		if (second == NULL)
 		{
-			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
 			pthread_mutex_unlock(&first->mutex_dongle);
 			return (true);
 		}
 		if (try_take_dongle(second, coder->data) == true)
-			return (false);
-		else
 		{
-			pthread_mutex_unlock(&coder->left_dongle->mutex_dongle);
-			pthread_mutex_unlock(&first->mutex_dongle);
-			return (true);
+			coder->has_dongle = true;
+			return (false);
 		}
+		pthread_mutex_unlock(&first->mutex_dongle);
+		return (true);
 	}
 	return (true);
 }
@@ -70,6 +68,8 @@ void	release_dongle(t_data *data, t_coder *coder)
 {
 	long long	curr_time;
 
+	if (coder->has_dongle == false)
+		return ;
 	curr_time = get_current_time(data);
 	if (coder->left_dongle != NULL)
 	{
@@ -81,6 +81,7 @@ void	release_dongle(t_data *data, t_coder *coder)
 		coder->right_dongle->cooldown = curr_time + data->dongle_cooldown;
 		pthread_mutex_unlock(&coder->right_dongle->mutex_dongle);
 	}
+	coder->has_dongle = false;
 	if (strcmp(FIFO, data->scheduler) == 0)
 	{
 		pthread_mutex_lock(&data->queue->mutex_queue);

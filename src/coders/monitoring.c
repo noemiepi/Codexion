@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 10:34:48 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/04 08:42:26 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 11:58:20 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ static bool	find_burnout(t_data *data, int *finish)
 	i = 0;
 	while (data->nb_coders != i)
 	{
+		pthread_mutex_lock(&data->coder[i].mutex_burnout);
 		time = get_current_time(data) - data->coder[i].burnout_time;
+		pthread_mutex_unlock(&data->coder[i].mutex_burnout);
 		if (get_finished(&data->coder[i]))
 			(*finish)++;
 		else if (time >= data->time_burnout)

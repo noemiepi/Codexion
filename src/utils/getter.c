@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 13:46:49 by npillet           #+#    #+#             */
-/*   Updated: 2026/07/02 15:13:35 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 12:07:16 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ bool	get_finished(t_coder *coder)
 {
 	bool	finished;
 
+	pthread_mutex_lock(&coder->mutex_burnout);
 	finished = coder->finish;
+	pthread_mutex_unlock(&coder->mutex_burnout);
 	return (finished);
 }

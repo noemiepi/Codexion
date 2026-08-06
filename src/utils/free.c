@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:18:04 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 11:40:57 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 12:11:45 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_structures(t_data *data)
 	free(data->queue);
 	free(data->heap);
 }
-
 
 static void	free_memory_fifo(t_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 12:00:42 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 12:13:16 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second);
 static bool	try_take_dongle(t_dongle *dongle, t_data *data);
+static void	cond_thread(t_data *data);
 
 bool	take_dongle(t_data *data, t_coder *coder)
 {
@@ -82,6 +83,11 @@ void	release_dongle(t_data *data, t_coder *coder)
 		pthread_mutex_unlock(&coder->right_dongle->mutex_dongle);
 	}
 	coder->has_dongle = false;
+	cond_thread(data);
+}
+
+static void	cond_thread(t_data *data)
+{
 	if (strcmp(FIFO, data->scheduler) == 0)
 	{
 		pthread_mutex_lock(&data->queue->mutex_queue);

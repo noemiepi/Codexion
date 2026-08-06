@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 09:17:16 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 11:33:38 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ typedef struct s_fifo
 typedef struct s_edf
 {
 	t_coder			*coder;
-	int				deadline;
+	long long		deadline;
 }					t_edf;
 
 /* ----------| PARSING |---------- */

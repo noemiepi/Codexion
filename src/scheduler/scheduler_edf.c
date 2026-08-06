@@ -6,13 +6,13 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 09:17:36 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/06 11:39:56 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout);
+static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout);
 static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
 static int	is_priority(t_data *data, t_coder *coder);
@@ -41,18 +41,13 @@ void	scheduler_edf(t_heap *heap, t_coder *coder)
 	pthread_mutex_unlock(&heap->mutex_heap);
 }
 
-static void	*insert_new_node(t_heap *heap, t_coder *coder, int burnout)
+static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout)
 {
-	t_edf	*node;
 	t_edf	tmp;
 	int		i;
 
-	node = malloc(sizeof(t_edf));
-	if (node == NULL)
-		return (NULL);
-	node->coder = coder;
-	node->deadline = burnout;
-	heap->node[heap->size] = *node;
+	heap->node[heap->size].coder = coder;
+	heap->node[heap->size].deadline = burnout;
 	heap->size += 1;
 	i = heap->size - 1;
 	while (i > 0 && heap->node[i].deadline < heap->node[(i - 1) / 2].deadline)

@@ -60,11 +60,63 @@ Here is a list of every parameters needed to run the program:
 | **scheduler** | `fifo` (First In, First Out) or `edf` (Earliest Deadline First) | Choose the priority order of the coders |
 
 ## Blocking cases handled
-*describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions (Mutual Exclusion, Circular Wait, Hold and Wait, No pre-emption), starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
+Knowing Coffman's conditions can help preventing a deadlock. These conditions are listed below:
+- Mutual Exclusion
+- Circular Wait
+- Hold and Wait
+- No pre-emption
+
+*describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions, starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
 
 ## Thread synchronization mechanisms
 *explaining the specific threading primitives used in your implementation (pthread_mutex_t, pthread_cond_t, custom event implementation) and how they coordinate access to shared resources (dongles, logging, monitor state).*
 *Include examples of how race conditions are prevented and how thread-safe communication is achieved between coders and the monitor.*
+
+Below is a chart showing how a coder works:
+```mermaid
+flowchart TD
+    A(Coder) --> B(Takes the first dongle)
+    B --> C{{Is the second dongle free?}}
+    C -->|Yes| D(Takes the second dongle)
+    C -->|No| E(Drops the first dongle)
+    E -->|Waits| B
+    D --> F(Compiles with two dongles)
+    F --> G(Releases the dongles)
+    F --> H(Debugs)
+    H --> I(Refractors)
+    I --> J{{Finished every compiles?}}
+    J -->|Yes| K(End)
+    J -->|No| B
+```
+If they reach their burnout during this loop, the entire program will stop.
+
+The monitor will look over every coder present and check if one of them burned out, causing the program to come to an end.
+
+In this program, the user has to choose a scheduler between `FIFO (First In, First Out)` and `EDF (Earliest Deadline First)`. They will determine in which order the coder goes.</br>
+For `FIFO`, the coders are put in a queue based on a first come, first save logic. Once the first finishes a compile, it leaves the queue to enter it back in the last position.
+As for `EDF`, the coders are placed in a heap based on their burnout. Lowest one has priority and is therefore first.
+To visualize both scheduler, there is a side by side representation below with 7 coders:
+
+```mermaid
+flowchart TD
+    subgraph EDF
+    B(Coder 1) --> A(Coder 5)
+    C(Coder 6) --> A
+    D(Coder 2) --> B
+    E(Coder 4) --> B
+    F(Coder 7) --> C
+    G(Coder 3) --> C
+    end
+
+    subgraph FIFO
+    H(Coder 1) --> I(Coder 3)
+    I --> J(Coder 4)
+    J --> K(Coder 2)
+    K --> L(Coder 5)
+    L --> M(Coder 7)
+    M --> N(Coder 6)
+    end
+```
 
 
 ## Resources
@@ -96,7 +148,3 @@ Here is a list of every parameters needed to run the program:
 - [Overtekk](https://github.com/Overtekk/Codexion)
 
 - [buchy16](https://github.com/buchy16/Codexion)
-
-
-what needs to be fixed:
-- EDF may be badly implemented

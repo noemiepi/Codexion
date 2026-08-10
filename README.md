@@ -5,10 +5,10 @@
 </div>
 
 ## Description
-A thread is the smallest unit of processing that can be scheduled by an operating system. It is a sequence of instructions within a program that can be managed independently.<br>
+A **thread** is the smallest unit of processing that can be scheduled by an operating system. It is a sequence of instructions within a program that can be managed independently.<br>
 Threads share the same process resources, including memory and file descriptors, but they run independently and can be executed simultaneously, allowing for multitasking within a single program.
 
-A mutex is a MUTual EXclusion device, and is useful for protecting shared data structures from concurrent modifications, and implementing critical sections and monitors.<br>
+A **mutex** is a **MUT***ual* **EX***clusion* device, and is useful for protecting shared data structures from concurrent modifications, and implementing critical sections and monitors.<br>
 A mutex has two possible states: unlocked (not owned by any thread), and locked (owned by one thread).<br>
 A mutex can never be owned by two different threads simultaneously.
 
@@ -17,11 +17,16 @@ Here is a visual representation:
 
 ```mermaid
 flowchart LR
+    classDef finish fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+
     A(Coder 1) ---|Dongle 1| B
     B(Coder 2) ---|Dongle 2| C
     C(Coder 3) ---|Dongle 3| D
     D(Coder 4) ---|Dongle 4| E
     E(Coder 5) ---|Dongle 5| A
+
+    class A,B,C,D,E finish
+    linkStyle default stroke:green;
 ```
 
 Each coders is represented by a thread and needs two dongles to compile and this is where the challenge lies. For this project, the coders need to hit their target compile numbers before burning out. However, if one of them burns out before reaching its goal, the program stops.
@@ -60,33 +65,79 @@ Here is a list of every parameters needed to run the program:
 | **scheduler** | `fifo` (First In, First Out) or `edf` (Earliest Deadline First) | Choose the priority order of the coders |
 
 ## Blocking cases handled
-Knowing Coffman's conditions can help preventing a deadlock. These conditions are listed below:
-- Mutual Exclusion
-- Circular Wait
-- Hold and Wait
-- No pre-emption
+- **Deadlock Prevention**</br>
+&emsp;To be able to prevent one, knowing Coffman's condition can help. These conditions are listed below:
+  - Mutual Exclusion
+  - Circular Wait
+  - Hold and Wait
+  - No pre-emption
+
+</br>
+
+- **Starvation Prevention**</br>
+&emsp;
+
+- **Cooldown Handling**</br>
+&emsp;
+
+- **Precise Burnout Detection**</br>
+&emsp;
+
+- **Log Serialization**</br>
+&emsp;
 
 *describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions, starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
 
 ## Thread synchronization mechanisms
-*explaining the specific threading primitives used in your implementation (pthread_mutex_t, pthread_cond_t, custom event implementation) and how they coordinate access to shared resources (dongles, logging, monitor state).*
+Two kinds of thread synchronization mechanisms are used in this program to handle shared ressources such as dongles, logging and monitor state:
+- `pthread_mutex_t`
+  - l
+- `pthread_cond_t`
+  - j
+
+
 *Include examples of how race conditions are prevented and how thread-safe communication is achieved between coders and the monitor.*
 
 Below is a chart showing how a coder works:
 ```mermaid
 flowchart TD
+
+    classDef start fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
+    classDef take_dongle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
+    classDef coder_compile fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#333;
+    classDef finish fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+
+    classDef dongle stroke:#fff3e0,stroke-width:2px;
+    classDef compile stroke:#f3e5f5,stroke-width:2px;
+
     A(Coder) --> B(Takes the first dongle)
+
+    subgraph Dongles
     B --> C{{Is the second dongle free?}}
     C -->|Yes| D(Takes the second dongle)
     C -->|No| E(Drops the first dongle)
+    end
+
+    subgraph Compile
     E -->|Waits| B
     D --> F(Compiles with two dongles)
     F --> G(Releases the dongles)
-    F --> H(Debugs)
+    G --> H(Debugs)
     H --> I(Refractors)
     I --> J{{Finished every compiles?}}
     J -->|Yes| K(End)
     J -->|No| B
+    end
+
+    class Dongles dongle
+    class Compile compile
+
+    class A start
+    class B,C,D,E take_dongle
+    class F,G,H,I,J,K coder_compile
+    class K finish
+
+    linkStyle default stroke:gray;
 ```
 If they reach their burnout during this loop, the entire program will stop.
 
@@ -99,14 +150,8 @@ To visualize both scheduler, there is a side by side representation below with 7
 
 ```mermaid
 flowchart TD
-    subgraph EDF
-    B(Coder 1) --> A(Coder 5)
-    C(Coder 6) --> A
-    D(Coder 2) --> B
-    E(Coder 4) --> B
-    F(Coder 7) --> C
-    G(Coder 3) --> C
-    end
+    classDef coders fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
+    classDef fifo stroke:#fff3e0,stroke-width:2px;
 
     subgraph FIFO
     H(Coder 1) --> I(Coder 3)
@@ -116,8 +161,39 @@ flowchart TD
     L --> M(Coder 7)
     M --> N(Coder 6)
     end
+
+    class FIFO fifo
+    class H,I,J,K,L,M,N coders
+
+    linkStyle default stroke:orange;
 ```
 
+```mermaid
+flowchart TD
+
+    classDef start fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
+    classDef next_level fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
+    classDef sub_levels fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#333;
+    classDef other_sublevel fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+    classDef edf stroke:#fff3e0,stroke-width:2px;
+
+    subgraph EDF
+    B(Coder 1) --> A(Coder 5)
+    C(Coder 6) --> A
+    D(Coder 2) --> B
+    E(Coder 4) --> B
+    F(Coder 7) --> C
+    G(Coder 3) --> C
+    end
+
+    class EDF edf
+    class A start
+    class B,C next_level
+    class D,E sub_levels
+    class F,G other_sublevel
+
+    linkStyle default stroke:gray;
+```
 
 ## Resources
 ### Notions

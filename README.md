@@ -19,11 +19,11 @@ Here is a visual representation:
 flowchart LR
     classDef finish fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
 
-    A(Coder 1) ---|Dongle 1| B
-    B(Coder 2) ---|Dongle 2| C
-    C(Coder 3) ---|Dongle 3| D
-    D(Coder 4) ---|Dongle 4| E
-    E(Coder 5) ---|Dongle 5| A
+    A(Coder 1) <--->|Dongle 1| B
+    B(Coder 2) <--->|Dongle 2| C
+    C(Coder 3) <--->|Dongle 3| D
+    D(Coder 4) <--->|Dongle 4| E
+    E(Coder 5) <--->|Dongle 5| A
 
     class A,B,C,D,E finish
     linkStyle default stroke:green;
@@ -75,30 +75,41 @@ Here is a list of every parameters needed to run the program:
 </br>
 
 - **Starvation Prevention**</br>
-&emsp;
+&emsp;This was handled differently depending on the scheduler.
+  - In `FIFO`, a linked-list is used to put the coders in the wanted order.
+  - In `EDF`, we use a binary tree to sort the coders by their burnout time, earliest being the first.
+
+</br>
 
 - **Cooldown Handling**</br>
-&emsp;
+&emsp;The dongles each have their cooldowns to respect. Once released, the data is refreshed using `dongle->cooldown = curr_time + data->dongle_cooldown`.
+
+</br>
 
 - **Precise Burnout Detection**</br>
-&emsp;
+&emsp;The monitor checks every milliseconds for a burnout while the simulation is active. If it finds out a coder burned out, the program stops right away.
+
+</br>
 
 - **Log Serialization**</br>
-&emsp;
+&emsp;For each log of either a coder or the monitor, a mutex for the print is locked for the time of the message's print.
 
-*describing all the concurrency issues addressed in your solution (e.g., deadlock prevention and Coffman’s conditions, starvation prevention, cooldown handling, precise burnout detection, and log serialization).*
+</br>
 
 ## Thread synchronization mechanisms
 Two kinds of thread synchronization mechanisms are used in this program to handle shared ressources such as dongles, logging and monitor state:
 - `pthread_mutex_t`
-  - l
+  - This can be used to enable only one thread to access a shared ressource. While doing so, the mutex is locked to ensure only thread is using it. It is unlocked as soon as it is finished.
+  - In the program, it was used to lock every shared ressources like dongles, their cooldown or the heap and the queue when making changes.
+
 - `pthread_cond_t`
-  - j
+  - It is a condition used to put threads to sleep when necessary. You can wake the threads up when this condition is met.
+  - `pthread_cond_wait` is used when the coder cannot proceed with the compiling process due to the lack of at least a dongle.
+  - Once a coder has finished compiling, `pthread_cond_broadcast` is used to wake every coder (thread) and have them try to take two dongles to repeat the compiling process.
 
-
-*Include examples of how race conditions are prevented and how thread-safe communication is achieved between coders and the monitor.*
-
+</br>
 Below is a chart showing how a coder works:
+
 ```mermaid
 flowchart TD
 
@@ -119,7 +130,7 @@ flowchart TD
     end
 
     subgraph Compile
-    E -->|Waits| B
+    E -->|Waits for the condition| B
     D --> F(Compiles with two dongles)
     F --> G(Releases the dongles)
     G --> H(Debugs)

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 14:39:46 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/29 14:52:49 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ static void	terminal_logs1(t_data *data, t_coder *coder)
 	if (coder->nb_compile == data->nb_compiles_req)
 		coder->finish = true;
 	pthread_mutex_unlock(&coder->mutex_burnout);
-	if (strcmp(FIFO, data->scheduler) == 0)
-		scheduler_fifo(data->queue, coder, REMOVE);
 }
 
 static void	terminal_logs2(t_data *data, t_coder *coder)

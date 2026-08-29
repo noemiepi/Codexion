@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 12:13:16 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/29 14:48:41 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	take_dongle(t_data *data, t_coder *coder)
 	return (taking_dongle(coder, first, second));
 }
 
-static bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second)
+bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second)
 {
 	if (try_take_dongle(first, coder->data) == true)
 	{

@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 11:21:57 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/29 14:41:54 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ static void	add_to_fifo(t_data *data, t_coder *coder, t_queue *queue)
 		else
 			pthread_cond_wait(&data->queue->cond_queue,
 				&data->queue->mutex_queue);
+	}
+	if (get_active_sim(data))
+	{
+		delete_node(queue);
+		pthread_cond_broadcast(&data->queue->cond_queue);
 	}
 }
 

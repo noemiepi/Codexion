@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 14:42:09 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 14:51:17 by npillet          ###   ########.fr       */
+/*   Updated: 2026/08/29 13:08:46 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static bool	protected_heap(t_heap *heap, t_coder *coder, \
 		pthread_mutex_lock(&left->mutex_burnout);
 		if (beats(coder, left) == false)
 			result = false;
-		pthread_mutex_unlock(&coder->mutex_burnout);
 		pthread_mutex_unlock(&left->mutex_burnout);
+		pthread_mutex_unlock(&coder->mutex_burnout);
 	}
 	if (result && right != left && in_heap(heap, right))
 	{
@@ -54,8 +54,8 @@ static bool	protected_heap(t_heap *heap, t_coder *coder, \
 		pthread_mutex_lock(&right->mutex_burnout);
 		if (beats(coder, right) == false)
 			result = false;
-		pthread_mutex_unlock(&coder->mutex_burnout);
 		pthread_mutex_unlock(&right->mutex_burnout);
+		pthread_mutex_unlock(&coder->mutex_burnout);
 	}
 	return (result);
 }

@@ -66,7 +66,7 @@ Here is a list of every parameters needed to run the program:
 
 ## Blocking cases handled
 - **Deadlock Prevention**</br>
-&emsp;To be able to prevent one, knowing Coffman's condition can help. These conditions are listed below:
+&emsp;To be able to prevent one, knowing Coffman's conditions can help. These conditions are listed below:
   - Mutual Exclusion
   - Circular Wait
   - Hold and Wait
@@ -155,9 +155,9 @@ If they reach their burnout during this loop, the entire program will stop.
 The monitor will look over every coder present and check if one of them burned out, causing the program to come to an end.
 
 In this program, the user has to choose a scheduler between `FIFO (First In, First Out)` and `EDF (Earliest Deadline First)`. They will determine in which order the coder goes.</br>
-For `FIFO`, the coders are put in a queue based on a first come, first save logic. Once the first finishes a compile, it leaves the queue to enter it back in the last position.
-As for `EDF`, the coders are placed in a heap based on their burnout. Lowest one has priority and is therefore first.
-To visualize both scheduler, there is a side by side representation below with 7 coders:
+For `FIFO`, the coders are put in a queue based on a first come, first served logic. Once the first finishes a compile, it leaves the queue to enter it back in the last position.</br>
+As for `EDF`, the coders are placed in a heap based on their burnout. Lowest one has priority and is therefore first.</br>
+To visualize both schedulers, there is a side by side representation below with 7 coders:
 
 ```mermaid
 flowchart TD

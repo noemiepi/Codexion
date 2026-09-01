@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:44:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/06/19 11:14:17 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/01 13:16:51 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	check_given_time(char *given_time)
 	int	time;
 
 	time = ft_atoi(given_time);
-	if (time > 0)
+	if (time >= 0)
 		return (true);
 	return (false);
 }
@@ -47,7 +47,7 @@ bool	check_number_of_compiles(char *compiles, t_data *data)
 	int	nb_compiles;
 
 	nb_compiles = ft_atoi(compiles);
-	if (nb_compiles > 0)
+	if (nb_compiles >= 0)
 	{
 		data->nb_compiles_req = nb_compiles;
 		return (true);

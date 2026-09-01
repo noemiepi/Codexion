@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 14:36:10 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/29 14:52:49 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/01 15:24:43 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	*coders_action(void *arg)
 		else if (strcmp(EDF, data->scheduler) == 0)
 			scheduler_edf(data->heap, coder);
 		terminal_logs1(data, coder);
+		if (strcmp(FIFO, data->scheduler) == 0)
+			scheduler_fifo(data->queue, coder, REMOVE);
 		terminal_logs2(data, coder);
 	}
 	return (NULL);

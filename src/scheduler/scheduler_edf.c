@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/29 13:26:45 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/01 09:39:17 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout)
 		heap->node[i] = heap->node[(i - 1) / 2];
 		heap->node[(i - 1) / 2] = tmp;
 		i = (i - 1) / 2;
+	}
+	if (get_active_sim(coder->data))
+	{
+		delete_node(heap, coder);
+		pthread_cond_broadcast(&heap->cond_heap);
 	}
 	return (NULL);
 }

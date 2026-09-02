@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/09/01 09:39:17 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/02 16:30:48 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout);
 static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
+// static bool	is_priority(t_data *data, t_coder *coder);
 
 void	scheduler_edf(t_heap *heap, t_coder *coder)
 {
@@ -27,7 +28,7 @@ void	scheduler_edf(t_heap *heap, t_coder *coder)
 	pthread_mutex_unlock(&heap->mutex_heap);
 	while (get_active_sim(coder->data))
 	{
-		if (is_priority(heap, data, coder))
+		if (is_priority(data, coder))
 		{
 			if (take_dongle(data, coder) == false)
 				break ;
@@ -116,3 +117,19 @@ static void	check_deadline(t_heap *heap, int i)
 			break ;
 	}
 }
+
+// static bool	is_priority(t_data *data, t_coder *coder)
+// {
+// 	int			left_id;
+// 	int			right_id;
+// 	long long	time;
+
+// 	time = get_burnout(coder);
+// 	left_id = (coder->id - 1) % data->nb_coders;
+// 	right_id = (coder->id + 1) % data->nb_coders;
+// 	if (get_burnout(&data->coder[left_id]) < time)
+// 		return (false);
+// 	if (get_burnout(&data->coder[right_id]) < time)
+// 		return (false);
+// 	return (true);
+// }

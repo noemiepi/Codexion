@@ -6,34 +6,21 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/09/01 15:58:23 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/02 10:29:09 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static void		add_to_fifo(t_data *data, t_coder *coder, t_queue *queue);
 static void		*insert_new_node(t_queue *queue, t_coder *coder);
 static void		*delete_node(t_queue *queue);
 
-void	scheduler_fifo(t_queue *queue, t_coder *coder, int step)
+void	scheduler_fifo(t_queue *queue, t_coder *coder)
 {
 	t_data	*data;
 
 	data = coder->data;
 	pthread_mutex_lock(&queue->mutex_queue);
-	if (step == ADD)
-		add_to_fifo(data, coder, queue);
-	if (step == REMOVE)
-	{
-		delete_node(queue);
-		pthread_cond_broadcast(&data->queue->cond_queue);
-	}
-	pthread_mutex_unlock(&queue->mutex_queue);
-}
-
-static void	add_to_fifo(t_data *data, t_coder *coder, t_queue *queue)
-{
 	insert_new_node(queue, coder);
 	while (get_active_sim(data)
 		&& (data->queue->front->coder != coder || take_dongle(data, coder)))
@@ -53,6 +40,7 @@ static void	add_to_fifo(t_data *data, t_coder *coder, t_queue *queue)
 		delete_node(queue);
 		pthread_cond_broadcast(&data->queue->cond_queue);
 	}
+	pthread_mutex_unlock(&queue->mutex_queue);
 }
 
 static void	*insert_new_node(t_queue *queue, t_coder *coder)

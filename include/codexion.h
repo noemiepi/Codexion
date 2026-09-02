@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:51:08 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/29 13:27:00 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/02 15:57:08 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 
 # define FIFO "fifo"
 # define EDF "edf"
-
-# define ADD 1
-# define REMOVE 2
 
 # define DONGLE_TAKEN "%lld: coder %d has taken a dongle\n"
 # define COMPILING "%lld: coder %d is compiling\n"
@@ -149,18 +146,17 @@ void		create_threads(t_data *data);
 void		join_threads(t_data *data);
 
 /* ---------| SCHEDULERS |-------- */
-void		scheduler_fifo(t_queue *queue, t_coder *coder, int step);
+void		scheduler_fifo(t_queue *queue, t_coder *coder);
 void		scheduler_edf(t_heap *heap, t_coder *coder);
 
 /* -----------| UTILS |----------- */
 int			ft_atoi(const char *str);
 
-int			is_priority(t_heap *heap, t_data *data, t_coder *coder);
-
 long long	get_time(void);
 long long	get_current_time(t_data *data);
 bool		get_active_sim(t_data *data);
 bool		get_finished(t_coder *coder);
+long long	get_burnout(t_coder *coder);
 
 void		free_structures(t_data *data);
 

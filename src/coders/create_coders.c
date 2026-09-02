@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 14:04:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/08/06 08:57:04 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/02 11:10:01 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	init_coder(t_data *data, t_coder *coder, int i)
 	coder->nb_compile = 0;
 	coder->burnout_time = 0;
 	coder->finish = false;
+	coder->has_dongle = false;
 	coder->left_dongle = NULL;
 	coder->right_dongle = NULL;
 	coder->thread_id = thread;

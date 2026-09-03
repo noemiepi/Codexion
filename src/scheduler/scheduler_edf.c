@@ -6,16 +6,16 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 14:28:05 by npillet           #+#    #+#             */
-/*   Updated: 2026/09/02 16:30:48 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/03 15:26:11 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout);
+static void	insert_new_node(t_heap *heap, t_coder *coder, long long burnout);
 static void	delete_node(t_heap *heap, t_coder *coder);
 static void	check_deadline(t_heap *heap, int i);
-// static bool	is_priority(t_data *data, t_coder *coder);
+static bool	is_priority(t_data *data, t_coder *coder);
 
 void	scheduler_edf(t_heap *heap, t_coder *coder)
 {
@@ -33,7 +33,7 @@ void	scheduler_edf(t_heap *heap, t_coder *coder)
 			if (take_dongle(data, coder) == false)
 				break ;
 		}
-		usleep(1000);
+		usleep(500);
 	}
 	pthread_mutex_lock(&heap->mutex_heap);
 	delete_node(heap, coder);
@@ -41,7 +41,7 @@ void	scheduler_edf(t_heap *heap, t_coder *coder)
 	pthread_mutex_unlock(&heap->mutex_heap);
 }
 
-static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout)
+static void	insert_new_node(t_heap *heap, t_coder *coder, long long burnout)
 {
 	t_edf	tmp;
 	int		i;
@@ -57,12 +57,6 @@ static void	*insert_new_node(t_heap *heap, t_coder *coder, long long burnout)
 		heap->node[(i - 1) / 2] = tmp;
 		i = (i - 1) / 2;
 	}
-	if (get_active_sim(coder->data))
-	{
-		delete_node(heap, coder);
-		pthread_cond_broadcast(&heap->cond_heap);
-	}
-	return (NULL);
 }
 
 static void	delete_node(t_heap *heap, t_coder *coder)
@@ -118,18 +112,12 @@ static void	check_deadline(t_heap *heap, int i)
 	}
 }
 
-// static bool	is_priority(t_data *data, t_coder *coder)
-// {
-// 	int			left_id;
-// 	int			right_id;
-// 	long long	time;
+static bool	is_priority(t_data *data, t_coder *coder)
+{
+	long long	time;
 
-// 	time = get_burnout(coder);
-// 	left_id = (coder->id - 1) % data->nb_coders;
-// 	right_id = (coder->id + 1) % data->nb_coders;
-// 	if (get_burnout(&data->coder[left_id]) < time)
-// 		return (false);
-// 	if (get_burnout(&data->coder[right_id]) < time)
-// 		return (false);
-// 	return (true);
-// }
+	time = get_burnout(coder);
+	if (get_burnout(data->heap->node[0].coder) < time)
+		return (false);
+	return (true);
+}

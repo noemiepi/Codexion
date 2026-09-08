@@ -67,10 +67,10 @@ Here is a list of every parameters needed to run the program:
 ## Blocking cases handled
 - **Deadlock Prevention**</br>
 &emsp;To be able to prevent one, knowing Coffman's conditions can help. These conditions are listed below:
-  - Mutual Exclusion
-  - Circular Wait
-  - Hold and Wait
-  - No pre-emption
+  - ***Mutual Exclusion***: At least one resource involved in each request is non-shareable
+  - ***Circular Wait***: When a *coder a* holds a resource needed by *coder b*
+  - ***Hold and Wait***: A task that's already holding one or more resources may request additional resources and wait while still holding the one(s) they have
+  - ***No pre-emption***: Resources cannot be forcibly removed from a task, the release must be voluntary
 
 </br>
 
@@ -113,40 +113,46 @@ Below is a chart showing how a coder works:
 ```mermaid
 flowchart TD
 
-    classDef start fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
-    classDef take_dongle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
-    classDef coder_compile fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#333;
-    classDef finish fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+    classDef start-finish fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
+    classDef quest_dongle fill:#cad182,stroke:#606c38,stroke-width:2px,color:#333;
+    classDef take_dongle fill:#606c38,stroke:#283618,stroke-width:2px,color:#fefae0;
+    classDef quest_compile fill:#fec89a,stroke:#dda15e,stroke-width:2px,color:#333;
+    classDef coder_compile fill:#dda15e,stroke:#bc6c25,stroke-width:2px,color:#333;
 
-    classDef dongle stroke:#fff3e0,stroke-width:2px;
-    classDef compile stroke:#f3e5f5,stroke-width:2px;
+    classDef dongle stroke:#cad182,stroke-width:2px;
+    classDef compile stroke:#fec89a,stroke-width:2px;
 
-    A(Coder) --> B(Takes the first dongle)
+    A(Coder) --> B{{Is the first dongle free?}}
 
     subgraph Dongles
-    B --> C{{Is the second dongle free?}}
-    C -->|Yes| D(Takes the second dongle)
-    C -->|No| E(Drops the first dongle)
+    B --> |Yes| E(Takes the first dongle)
+    B -->|No| D(Waits for the condition)
+    E --> F{{Is the second dongle free?}}
+    F -->|Yes| G(Takes the second dongle)
+    F -->|No| C(Drops the first dongle)
+    C --> D
+    D --> B
     end
 
     subgraph Compile
-    E -->|Waits for the condition| B
-    D --> F(Compiles with two dongles)
-    F --> G(Releases the dongles)
-    G --> H(Debugs)
-    H --> I(Refractors)
-    I --> J{{Finished every compiles?}}
-    J -->|Yes| K(End)
-    J -->|No| B
+    G --> H(Compiles with two dongles)
+    H --> I(Releases the dongles)
+    I --> J(Debugs)
+    J --> K(Refractors)
+    K --> L{{Finished every compiles?}}
+    L -->|No| B
     end
+
+    L -->|Yes| M(End)
 
     class Dongles dongle
     class Compile compile
 
-    class A start
-    class B,C,D,E take_dongle
-    class F,G,H,I,J,K coder_compile
-    class K finish
+    class A,M start-finish
+    class B,F quest_dongle
+    class C,D,E,G take_dongle
+    class H,I,J,K coder_compile
+    class L quest_compile
 
     linkStyle default stroke:gray;
 ```
@@ -161,8 +167,8 @@ To visualize both schedulers, there is a side by side representation below with 
 
 ```mermaid
 flowchart TD
-    classDef coders fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
-    classDef fifo stroke:#fff3e0,stroke-width:2px;
+    classDef coders fill:#fec89a,stroke:#dda15e,stroke-width:2px,color:#333;
+    classDef fifo stroke:#fec89a,stroke-width:2px;
 
     subgraph FIFO
     H(Coder 1) --> I(Coder 3)
@@ -182,10 +188,10 @@ flowchart TD
 ```mermaid
 flowchart TD
 
-    classDef start fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
-    classDef next_level fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
-    classDef sub_levels fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#333;
-    classDef other_sublevel fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+    classDef start fill:#fec89a,stroke:#dda15e,stroke-width:2px,color:#333;
+    classDef next_level fill:#cad182,stroke:#606c38,stroke-width:2px,color:#333;
+    classDef sub_levels fill:#dda15e,stroke:#bc6c25,stroke-width:2px,color:#333;
+    classDef other_sublevel fill:#eceff1,stroke:#607d8b,stroke-width:2px,color:#333;
     classDef edf stroke:#fff3e0,stroke-width:2px;
 
     subgraph EDF
@@ -209,27 +215,27 @@ flowchart TD
 ## Resources
 ### Notions
 #### Threads
-- https://dev.to/emanuelgustafzon/mastering-concurrency-in-c-with-pthreads-a-comprehensive-guide-56je
+- [pthread Functions](https://dev.to/emanuelgustafzon/mastering-concurrency-in-c-with-pthreads-a-comprehensive-guide-56je)
 
-- https://www.geeksforgeeks.org/c/multithreading-in-c/
+- [Multithreading](https://www.geeksforgeeks.org/c/multithreading-in-c/)
 
 #### Mutex
-- https://www.codequoi.com/en/threads-mutexes-and-concurrent-programming-in-c/#what-is-a-mutex-
+- [What's a MUTEX?](https://www.codequoi.com/en/threads-mutexes-and-concurrent-programming-in-c/#what-is-a-mutex-)
 
 #### Deadlock
-- https://stackoverflow.com/questions/34512/what-is-a-deadlock
+- [What's a deadlock](https://stackoverflow.com/questions/34512/what-is-a-deadlock)
 
-- https://csresources.github.io/SystemProgrammingWiki/SystemProgramming/Deadlock,-Part-2:-Deadlock-Conditions/
+- [Coffman's Conditions](https://faq.computersciencewiki.org/index.php/home/article/coffman-conditions)
 
 #### FIFO (First In, First Out)
-- https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn
+- [FIFO's structure](https://dev.to/pmbanugo/write-your-own-fifo-queue-an-essential-data-structure-for-modern-systems-2kjn)
 
-- https://medium.com/@noransaber685/understanding-queue-data-structures-in-c-the-first-in-first-out-principle-fbd1f89d40dc
+- [FIFO's principle](https://medium.com/@noransaber685/understanding-queue-data-structures-in-c-the-first-in-first-out-principle-fbd1f89d40dc)
 
 #### EDF (Earliest Deadline First)
-- https://www.w3schools.com/dsa/dsa_data_binarytrees.php
+- [Binary Tree 1](https://www.w3schools.com/dsa/dsa_data_binarytrees.php)
 
-- https://data-flair.training/blogs/binary-tree-in-c/
+- [Binary Tree 2](https://data-flair.training/blogs/binary-tree-in-c/)
 
 ### GitHub
 - [Overtekk](https://github.com/Overtekk/Codexion)

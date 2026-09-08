@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 11:47:24 by npillet           #+#    #+#             */
-/*   Updated: 2026/09/02 10:29:09 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/08 13:17:58 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	scheduler_fifo(t_queue *queue, t_coder *coder)
 	pthread_mutex_lock(&queue->mutex_queue);
 	insert_new_node(queue, coder);
 	while (get_active_sim(data)
-		&& (data->queue->front->coder != coder || take_dongle(data, coder)))
+		&& (queue->front->coder != coder || take_dongle(data, coder)))
 	{
 		if (get_active_sim(data) && queue->front->coder == coder)
 		{

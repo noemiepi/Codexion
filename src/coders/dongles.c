@@ -6,7 +6,7 @@
 /*   By: npillet <npillet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 13:50:53 by npillet           #+#    #+#             */
-/*   Updated: 2026/09/08 12:48:03 by npillet          ###   ########.fr       */
+/*   Updated: 2026/09/08 15:23:21 by npillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ bool	taking_dongle(t_coder *coder, t_dongle *first, t_dongle *second)
 	{
 		if (second == NULL)
 		{
-			coder->has_dongle = true;
-			return (false);
+			pthread_mutex_unlock(&first->mutex_dongle);
+			return(true);
 		}
 		if (try_take_dongle(second, coder->data) == true)
 		{
